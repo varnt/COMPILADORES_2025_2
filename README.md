@@ -6,8 +6,8 @@ Trabalho de Compiladores 2025/2
 
 ### **1. Estrutura do Projeto e Configuração**
 - [ ] Implementar um analisador léxico usando a ferramenta **flex**.
-- [ ] Separar a função `main` em um arquivo chamado `main.cpp`, mantendo-a fora do código do scanner.
-- ✅ Manter o arquivo `tokens.h` intacto.
+ ✅ Separar a função `main` em um arquivo chamado `main.cpp`, mantendo-a fora do código do scanner.
+ ✅ Manter o arquivo `tokens.h` intacto.
 - [ ] Utilizar um container `map` de STL (Standard Template Library) para a tabela de símbolos global.
 
 ---
@@ -17,7 +17,7 @@ Trabalho de Compiladores 2025/2
 - [ ] Classificar os lexemas reconhecidos em tokens, retornando as constantes do arquivo `tokens.h` ou códigos ASCII para caracteres simples.
 - [ ] Incluir identificadores e literais (inteiros, reais, caracteres e strings) em uma tabela de símbolos global com acesso eficiente por chave alfanumérica.
 - [ ] Controlar o número da linha do arquivo fonte e fornecer a função `int getLineNumber(void)`.
-- ✅ Ignorar comentários de linha única, que começam com `//`.
+ ✅ Ignorar comentários de linha única, que começam com `//`.
 - [ ] Ignorar comentários de múltiplas linhas, que começam com `/*` e terminam com `*/`, mas contar as quebras de linha que estiverem dentro deles.
 - [ ] Ignorar caracteres em branco, como espaço, tabulação e nova linha.
 - [ ] Informar erro léxico e retornar o token de erro ao encontrar caracteres inválidos.
@@ -26,9 +26,9 @@ Trabalho de Compiladores 2025/2
 ---
 
 ### **3. Reconhecimento de Tokens**
-- [ ] **Palavras Reservadas:**
-  - ✅ Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.
-  - [ ] Tratar os literais booleanos `true` e `false` como palavras reservadas.
+✅ **Palavras Reservadas:**
+   ✅ Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.
+  ✅ Tratar os literais booleanos `true` e `false` como palavras reservadas.
 - [ ] **Caracteres Especiais:**
   - [ ] Retornar o código ASCII convertido para inteiro para os seguintes caracteres: `;`, `:`, `(`, `)`, `[`, `]`, `{`, `}`, `=`, `+`, `-`, `*`, `/`, `%`, `<`, `>`, `&`.
 - [ ] **Operadores Compostos:**
@@ -41,8 +41,8 @@ Trabalho de Compiladores 2025/2
   - [ ] Reconhecer identificadores formados por uma sequência de um ou mais caracteres alfabéticos (maiúsculos ou minúsculos) ou dígitos (a partir da segunda posição).
   - [ ] Permitir os caracteres `_` e `-` em qualquer posição.
 - [ ] **Literais:**
-  - [ ] **Inteiros:** Reconhecer sequências de um ou mais dígitos decimais.
-  - [ ] **Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
+  ✅ **Inteiros:** Reconhecer sequências de um ou mais dígitos decimais.
+  ✅ **Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
   - [ ] **Caracteres:** Reconhecer um único caractere entre aspas simples (apóstrofo).
   - [ ] **Strings:** Reconhecer sequências de caracteres entre aspas duplas.
   - [ ] Implementar as sequências de escape `\"` para aspas duplas e `\n` para quebra de linha dentro de strings.

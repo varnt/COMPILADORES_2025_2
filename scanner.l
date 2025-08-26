@@ -37,12 +37,19 @@ letter [A-Za-z]
 "read"                    {fprintf(stderr, "KW_READ");}
 "print"                   {fprintf(stderr, "KW_PRINT");}
 "return"                  {fprintf(stderr, "KW_RETURN");}
+    //Tratar os literais booleanos `true` e `false` como palavras reservadas.
+"true"                    {fprintf(stderr, "LIT_TRUE");}
+"false"                   {fprintf(stderr, "LIT_FALSE");}
 
 [a-zA-Z][a-zA-Z0-9]*      {fprintf(stderr, "ID");}
 [-+*/=()]                 {fprintf(stderr, "OPERADORES");}
 \n                        {++line_number;} }
 [ \t]+ { /* Ignora espaços em branco */ }
-
+    //**Inteiros:** Reconhecer sequências de um ou mais dígitos decimais.
+digit+                    {fprintf(stderr, "LIT_INT");}
+    //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
+digit+"."digit+          {fprintf(stderr, "LIT_FLOAT");}
+    //string                   {fprintf(stderr, "LIT_STRING");}
 "//".* { /* Ignora comentários de linha simples única*/ }
 "/*"                      { BEGIN COMMENT; }
 
