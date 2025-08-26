@@ -17,7 +17,7 @@ Trabalho de Compiladores 2025/2
 - [ ] Classificar os lexemas reconhecidos em tokens, retornando as constantes do arquivo `tokens.h` ou códigos ASCII para caracteres simples.
 - [ ] Incluir identificadores e literais (inteiros, reais, caracteres e strings) em uma tabela de símbolos global com acesso eficiente por chave alfanumérica.
 - [ ] Controlar o número da linha do arquivo fonte e fornecer a função `int getLineNumber(void)`.
-- [ ] Ignorar comentários de linha única, que começam com `//`.
+- [V] Ignorar comentários de linha única, que começam com `//`.
 - [ ] Ignorar comentários de múltiplas linhas, que começam com `/*` e terminam com `*/`, mas contar as quebras de linha que estiverem dentro deles.
 - [ ] Ignorar caracteres em branco, como espaço, tabulação e nova linha.
 - [ ] Informar erro léxico e retornar o token de erro ao encontrar caracteres inválidos.

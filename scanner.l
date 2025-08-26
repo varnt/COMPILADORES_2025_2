@@ -2,6 +2,8 @@
 %{
     
 %}
+/* Aluno Victor de Souza Arnt Matricula 00201097 */
+
 #define ever(;;)
 #define KW_INT 1
 #define KW_if 2
@@ -20,7 +22,7 @@ h[a-fA-F0-9]+             {fprintf(stderr, "LIT_HEX");}
 \n                        {++line_number;} }
 [ \t]+ { /* Ignora espaços em branco */ }
 
-"::".* { /* Ignora comentários de linha simples*/ }
+"//".* { /* Ignora comentários de linha simples*/ }
 ":/"                      { BEGIN COMMENT; }
 
     /* . {}  para ignorar otros caracteres  */
