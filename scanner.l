@@ -34,7 +34,7 @@
 \n                        {++line_number;} }
 [ \t]+ { /* Ignora espaços em branco */ }
 
-"//".* { /* Ignora comentários de linha simples*/ }
+"//".* { /* Ignora comentários de linha simples única*/ }
 "/*"                      { BEGIN COMMENT; }
 
     /* . {}  para ignorar otros caracteres  */
