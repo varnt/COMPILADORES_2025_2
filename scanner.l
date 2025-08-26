@@ -11,6 +11,7 @@
 /* Exemplo:
 digit [0-9]
 letter [A-Za-z]
+specialcaracters [,;:()[]{}=+-*/%<>&|~]
 
 /* não preciso definir aqui pq já está em tokens.h
     //#define ever(;;)
@@ -49,8 +50,12 @@ letter [A-Za-z]
 digit+                    {fprintf(stderr, "LIT_INT");}
     //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
 digit+"."digit+          {fprintf(stderr, "LIT_FLOAT");}
+    // Retornar o código ASCII convertido para inteiro para os seguintes caracteres:
+specialcaracters         {return yytext[0];} // Retorna o código ASCII do caracter
+   
     //string                   {fprintf(stderr, "LIT_STRING");}
 "//".* { /* Ignora comentários de linha simples única*/ }
+
 "/*"                      { BEGIN COMMENT; }
 
     /* . {}  para ignorar otros caracteres  */

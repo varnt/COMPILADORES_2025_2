@@ -63,3 +63,10 @@ sudo apt upgrade
 - [Flex Manual](https://westes.github.io/flex/manual/)
 - [Bison Manual](https://www.gnu.org/software/bison/manual/bison.html)
 - [C Language Reference](https://en.cppreference.com/w/c/language)
+
+# Chave para submissão do arquivo pelo sistema do prof
+A string abaixo é sua chave individual, criada para que somente quem conheça essa string possa acessar os arquivos da etapa do trabalho de Compiladores submetido no servidor http, que estarão em um subdiretório de mesmo nome, conforme instruções dadas no arquivo format1_pdf e explicadas em aula. Essa informação é privada, e não deve ser compartilhada:
+```
+uzplumqlyfxeqblr
+```
+
