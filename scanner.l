@@ -1,9 +1,17 @@
-
+/* Seção 1: Definições */
 %{
-     #include "tokens.h"
+    // Código C (e.g., #include, declarações de variáveis e funções)
+    #include <stdio.h>
+    #include main.cpp
+    #include "tokens.h"
     
 %}
 /* Aluno Victor de Souza Arnt Matricula 00201097 */
+/* Substituições (opcional)
+/* Exemplo:
+digit [0-9]
+letter [A-Za-z]
+
 /* não preciso definir aqui pq já está em tokens.h
     //#define ever(;;)
     //#define KW_INT 1
@@ -13,9 +21,10 @@
     //#define OPERATORS 5
 
 
-%X COMMENT
+
 
 %%
+    /* Seção 2: Regras */
     //Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.
 "int"                     {fprintf(stderr, "KW_INT");}
 "char"                    {fprintf(stderr, "KW_CHAR");}
@@ -45,14 +54,6 @@
 
 
 %%
+/* Seção 3: Sub-rotinas */
+main(); // Chama a função principal do main.cpp
 
-int main()
-{
-    yylex();
-
-}
-
-int yywrap()
-{
-    return 1;
-}
