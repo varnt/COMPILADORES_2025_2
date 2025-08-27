@@ -22,8 +22,7 @@ special_caracters [,;:()[]{}=+-*/%<>&|~]
 identifier      (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*) 
 literal_int     {digit}+
 literal_float   {digit}+"."{digit}+
-literal_true    "true"
-literal_false   "false"                   
+              
 
 
 %%
@@ -40,10 +39,12 @@ literal_false   "false"
 "read"                    {return KW_READ;}
 "print"                   {return KW_PRINT;}
 "return"                  {return KW_RETURN;}
-
-    //Tratar os literais booleanos true e false como palavras reservadas.
-literal_true               {return LIT_TRUE;}
-literal_false              {return LIT_FLASE;}
+"true"                    {return LIT_TRUE;}
+"false"                   {return LIT_FLASE;}
+"<="                      { return OPERATOR_LE; }
+">="                      { return OPERATOR_GE; }
+"=="                      { return OPERATOR_EQ; }
+"!="                      { return OPERATOR_DIF; }
 [a-zA-Z][a-zA-Z0-9]*      {return ID;}
 [-+*/=()]                 {return OPERADORES;}
 \n                        {++line_number;}
