@@ -17,11 +17,13 @@
 digit [0-9]
 letter_low [a-z]
 letter_up [A-Z]
-specialcaracters [,;:()[]{}=+-*/%<>&|~] 
+special_caracters [,;:()[]{}=+-*/%<>&|~] 
 /*Definição de palavras com base em caracteres e digitos*/
-identifier (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*) 
-LIT_TRUE "true"
-LIT_FALSE "false"
+identifier      (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*) 
+literal_int     {digit}+
+literal_float   {digit}+"."{digit}+
+literal_true    "true"
+literal_false   "false"                   
 
 
 %%
@@ -51,7 +53,7 @@ digit+                    {return LIT_INT;}
     //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
 digit+"."digit+          {return LIT_FLOAT;}
     // Retornar o código ASCII convertido para inteiro para os seguintes caracteres:
-specialcaracters        {return yytext;} // Retorna o código ASCII do caracter
+special_caracters        {return yytext;} // Retorna o código ASCII do caracter
    
     //string                   {return LIT_STRING;}
 "//".*                   { /* Ignora comentários de linha simples única*/ }
