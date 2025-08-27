@@ -1,27 +1,22 @@
 /* Seção 1: Definições */
 %{
-    // Código C (e.g., #include, declarações de variáveis e funções)
+    // Seção 1.1 Código C (e.g., #include, declarações de variáveis e funções)
     #include <stdio.h>
-    #include main.cpp
+    #include <stdlib.h>
+    #include <string.h>
+    #include "main.cpp"
     #include "tokens.h"
+
+    int line_number = 1; // Variável para rastrear o número da linha
+    bool is_running = true; // Variável para controlar a execução do scanner
     
 %}
 /* Aluno Victor de Souza Arnt Matricula 00201097 */
-/* Substituições (opcional)
-/* Exemplo:
+/* Substituições (opcional) */
+/* Exemplo: */
 digit [0-9]
 letter [A-Za-z]
-specialcaracters [,;:()[]{}=+-*/%<>&|~]
-
-/* não preciso definir aqui pq já está em tokens.h
-    //#define ever(;;)
-    //#define KW_INT 1
-    //#define KW_if 2
-    //#define LIT_HEX 3
-    //#define IDENTIFIER 4
-    //#define OPERATORS 5
-
-
+specialcaracters [,;:()[]{}=+-*/%<>&|~] 
 
 
 %%
@@ -51,16 +46,14 @@ digit+                    {fprintf(stderr, "LIT_INT");}
     //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
 digit+"."digit+          {fprintf(stderr, "LIT_FLOAT");}
     // Retornar o código ASCII convertido para inteiro para os seguintes caracteres:
-specialcaracters         {return yytext[0];} // Retorna o código ASCII do caracter
+specialcaracters        {return yytext;} // Retorna o código ASCII do caracter
    
     //string                   {fprintf(stderr, "LIT_STRING");}
-"//".* { /* Ignora comentários de linha simples única*/ }
+"//".*                   { /* Ignora comentários de linha simples única*/ }
 
-"/*"                      { BEGIN COMMENT; }
+"/*"                     { BEGIN COMMENT; }/* . {}  para ignorar otros caracteres  */
 
-    /* . {}  para ignorar otros caracteres  */
-
-<COMMENT> "/:" { BEGIN INITIAL; }
+<COMMENT> "/:"           { BEGIN INITIAL; } // Fim do comentário
 <COMMENT>   \n { ++line_number; }
 <COMMENT>
 
