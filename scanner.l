@@ -29,8 +29,6 @@ literal_false   "false"
 %%
     /* Seção 2: Regras */
     //Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.
-literal_true               {return LIT_TRUE;}
-literal_false                 {return LIT_FLASE;}
 "int"                     {return KW_INT;}
 "char"                    {return KW_CHAR;}
 "float"                   {return KW_FLOAT;}
@@ -42,9 +40,10 @@ literal_false                 {return LIT_FLASE;}
 "read"                    {return KW_READ;}
 "print"                   {return KW_PRINT;}
 "return"                  {return KW_RETURN;}
+
     //Tratar os literais booleanos true e false como palavras reservadas.
-
-
+literal_true               {return LIT_TRUE;}
+literal_false              {return LIT_FLASE;}
 [a-zA-Z][a-zA-Z0-9]*      {return ID;}
 [-+*/=()]                 {return OPERADORES;}
 \n                        {++line_number;}
