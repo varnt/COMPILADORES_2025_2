@@ -23,6 +23,7 @@ special_caracters [,;:()[]{}=+-*/%<>&|~]
 identifier      (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*)  
 literal_int     {digit}+
 literal_float   {digit}+"."{digit}+
+literal_caractere {'letter_low|letter_up|special_caracters'}
               
 
 
@@ -49,8 +50,8 @@ literal_float   {digit}+"."{digit}+
 identifier                {return TK_IDENTIFIER;} // Identificadores
 \n                        {++line_number;} //revisar
 [ \t]+                    { /* Ignora espaços em branco */ }  
-{digit}+                  {return LIT_INT;} //inteiros
-{digit}+"."{digit}+       {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.**//
+literal_int               {return LIT_INT;} //inteiros
+literal_float       {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.**//
 special_caracters         {return yytext;} // Retorna o código ASCII do caracter
    
 "//".*                   { /* Ignora comentários de linha simples única*/ }
