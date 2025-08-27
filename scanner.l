@@ -37,11 +37,26 @@ literal_char    '[^'\n]'
 literal_string    \"(\\.|[^"\n])*\"
 
               
-
+%x STRING COMMENT_ML
 
 %%
     /* Seção 2: Regras */
-    //Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.
+    /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS*/
+
+"//".*                   { /* Ignora comentários de linha simples única*/ }
+
+  "/*"                    { BEGIN COMMENT_ML;} /* Inicia o estado de comentário multilinha, adaptado de código exercitado em aula.*/
+<COMMENT_ML>"*/"          { BEGIN INITIAL;}    
+<COMMENT_ML>\n            { ++line_number;}
+<COMMENT_ML>.             { /* Ignora */}
+
+    /* Operadores Compostos: devem ser colocados antes dos operadores simples */
+"<="                      {return OPERATOR_LE;}
+">="                      {return OPERATOR_GE;}
+"=="                      {return OPERATOR_EQ;}
+"!="                      {return OPERATOR_DIF;}
+
+    /*Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.*//
 "int"                     {return KW_INT;}
 "char"                    {return KW_CHAR;}
 "float"                   {return KW_FLOAT;}
@@ -55,20 +70,30 @@ literal_string    \"(\\.|[^"\n])*\"
 "return"                  {return KW_RETURN;}
 "true"                    {return LIT_TRUE;}
 "false"                   {return LIT_FLASE;}
-"<="                      {return OPERATOR_LE;}
-">="                      {return OPERATOR_GE;}
-"=="                      {return OPERATOR_EQ;}
-"!="                      {return OPERATOR_DIF;}
-identifier                {return TK_IDENTIFIER;} // Identificadores
-literal_char              {return LIT_CHAR;} //Caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
-literal_string            {return LIT_STRING;} //Cadeia de caracteres entre aspas duplas
-\n                        {++line_number;} //revisar
-[ \t]+                    { /* Ignora espaços em branco */ }  
+
+
+identifier                {return TK_IDENTIFIER;} //identificadores
+literal_float             {return LIT_FLOAT;} //reais
 literal_int               {return LIT_INT;} //inteiros
-literal_float       {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.**//
-special_caracters         {return yytext;} // Retorna o código ASCII do caracter
+literal_char              {return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
+
+    /* Início de uma string literal. Usa condição de início exclusiva.*/
+\"                         { BEGIN STRING; }
+    /* Dentro do estado `STRING`, processa caracteres de escape*/
+<STRING>\"                 {BEGIN INITIAL; return LIT_STRING;} // Fim da string
+<STRING>\\\"               {/* Trata a sequência de escape */}
+<STRING>\\n                {/* Trata a sequência de escape */}
+<STRING>\n                 {yyerror("Literal de string não terminada"); ++line_number; BEGIN INITIAL;}
+<STRING>.                  {/* Adiciona o caractere à string literal */}
+
+special_caracters         {return yytext;} //retorna o código ASCII do caracter
+[ \t]+                    { /* Ignora espaços em branco */ }
+\n                        {++line_number;} 
+
+    /* Regra especial para fim de arquivo */
+<<EOF>>                   { is_running = false; return 0; }
    
-"//".*                   { /* Ignora comentários de linha simples única*/ }
+
 
 
 %%
