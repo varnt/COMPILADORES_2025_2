@@ -136,19 +136,19 @@ special_caracters         {return yytext;} //retorna o código ASCII do caracter
     int check_reserved(const std::string& lexeme) {
         static std::map<std::string, int> reserved_words;
         if (reserved_words.empty()) {
-            reserved_words["char"] = RW_CHAR;
-            reserved_words["int"] = RW_INT;
-            reserved_words["float"] = RW_FLOAT;
-            reserved_words["bool"] = RW_BOOL;
-            reserved_words["if"] = RW_IF;
-            reserved_words["else"] = RW_ELSE;
-            reserved_words["do"] = RW_DO;
-            reserved_words["while"] = RW_WHILE;
-            reserved_words["read"] = RW_READ;
-            reserved_words["print"] = RW_PRINT;
-            reserved_words["return"] = RW_RETURN;
+            reserved_words["char"] = KW_CHAR;
+            reserved_words["int"] = KW_INT;
+            reserved_words["float"] = KW_FLOAT;
+            reserved_words["bool"] = KW_BOOL;
+            reserved_words["if"] = KW_IF;
+            reserved_words["else"] = KW_ELSE;
+            reserved_words["do"] = KW_DO;
+            reserved_words["while"] = KW_WHILE;
+            reserved_words["read"] = KW_READ;
+            reserved_words["print"] = KW_PRINT;
+            reserved_words["return"] = KW_RETURN;
             reserved_words["true"] = LIT_TRUE;
-            reserved_words["false"] = LIT_FALSE;
+            reserved_words["false"] = LIT_FLASE;
         }
         
         auto it = reserved_words.find(lexeme);
