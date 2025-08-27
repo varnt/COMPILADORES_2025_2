@@ -15,15 +15,27 @@
 /* Substituições (opcional) */
 /* Exemplo: */
 digit [0-9]
+/* Letras minusculas */
 letter_low [a-z]
+/* Letras maiusculas */
 letter_up [A-Z]
+/* Letras minusculas ou maiusculas */
+letter {letter_low|letter_up}
+/* Letras ou digitos */
+alphanum {letter_low|letter_up|digit}
+/* Caracteres especiais */
 special_caracters [,;:()[]{}=+-*/%<>&|~] 
-/* Definição de palavras com base em caracteres e digitos*/
+
 /* Identificador começa com uma letra (maiúscula ou minúscula) ou um sublinhado (_), seguido por qualquer combinação de letras, dígitos ou sublinhados. */
-identifier      (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*)  
+identifier      (({letter}|_)+( {alphanum}|_)*)
+/* Literais */
 literal_int     {digit}+
 literal_float   {digit}+"."{digit}+
-literal_caractere {'letter_low|letter_up|special_caracters'}
+/* Caracteres entre aspas simples, exceto aspas simples e nova linha */
+literal_char    '[^'\n]' 
+/* Cadeia de caracteres entre aspas duplas */
+literal_string    \"(\\.|[^"\n])*\"
+
               
 
 
@@ -48,6 +60,8 @@ literal_caractere {'letter_low|letter_up|special_caracters'}
 "=="                      {return OPERATOR_EQ;}
 "!="                      {return OPERATOR_DIF;}
 identifier                {return TK_IDENTIFIER;} // Identificadores
+literal_char              {return LIT_CHAR;} //Caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
+literal_string            {return LIT_STRING;} //Cadeia de caracteres entre aspas duplas
 \n                        {++line_number;} //revisar
 [ \t]+                    { /* Ignora espaços em branco */ }  
 literal_int               {return LIT_INT;} //inteiros
