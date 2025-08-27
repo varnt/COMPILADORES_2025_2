@@ -45,15 +45,12 @@ literal_float   {digit}+"."{digit}+
 ">="                      { return OPERATOR_GE; }
 "=="                      { return OPERATOR_EQ; }
 "!="                      { return OPERATOR_DIF; }
-[a-zA-Z][a-zA-Z0-9]*      {return ID;}
-[-+*/=()]                 {return OPERADORES;}
-\n                        {++line_number;}
-[ \t]+ { /* Ignora espaços em branco */ }
-    //**Inteiros:** Reconhecer sequências de um ou mais dígitos decimais.
-digit+                    {return LIT_INT;}
-    //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
-digit+"."digit+          {return LIT_FLOAT;}
-    // Retornar o código ASCII convertido para inteiro para os seguintes caracteres:
+[a-zA-Z][a-zA-Z0-9]*      {return ID;} //revisar ta errado certo
+[-+*/=()]                 {return OPERADORES;} //revisar
+\n                        {++line_number;} //revisar
+[ \t]+ { /* Ignora espaços em branco */ }  //revisar
+digit+                    {return LIT_INT;} //inteiros
+digit+"."digit+          {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
 special_caracters        {return yytext;} // Retorna o código ASCII do caracter
    
     //string                   {return LIT_STRING;}
