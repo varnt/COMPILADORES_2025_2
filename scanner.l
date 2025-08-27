@@ -18,8 +18,8 @@ digit [0-9]
 letter_low [a-z]
 letter_up [A-Z]
 special_caracters [,;:()[]{}=+-*/%<>&|~] 
-/*Definição de palavras com base em caracteres e digitos*/
-/Identificador começa com uma letra (maiúscula ou minúscula) ou um sublinhado (_), seguido por qualquer combinação de letras, dígitos ou sublinhados. */
+/* Definição de palavras com base em caracteres e digitos*/
+/* Identificador começa com uma letra (maiúscula ou minúscula) ou um sublinhado (_), seguido por qualquer combinação de letras, dígitos ou sublinhados. */
 identifier      (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*)  
 literal_int     {digit}+
 literal_float   {digit}+"."{digit}+
