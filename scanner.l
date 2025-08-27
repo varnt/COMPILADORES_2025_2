@@ -41,26 +41,19 @@ literal_float   {digit}+"."{digit}+
 "return"                  {return KW_RETURN;}
 "true"                    {return LIT_TRUE;}
 "false"                   {return LIT_FLASE;}
-"<="                      { return OPERATOR_LE; }
-">="                      { return OPERATOR_GE; }
-"=="                      { return OPERATOR_EQ; }
-"!="                      { return OPERATOR_DIF; }
+"<="                      {return OPERATOR_LE;}
+">="                      {return OPERATOR_GE;}
+"=="                      {return OPERATOR_EQ;}
+"!="                      {return OPERATOR_DIF;}
 [a-zA-Z][a-zA-Z0-9]*      {return ID;} //revisar ta errado certo
 [-+*/=()]                 {return OPERADORES;} //revisar
 \n                        {++line_number;} //revisar
-[ \t]+ { /* Ignora espaços em branco */ }  //revisar
-digit+                    {return LIT_INT;} //inteiros
-digit+"."digit+          {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
-special_caracters        {return yytext;} // Retorna o código ASCII do caracter
+[ \t]+                    { /* Ignora espaços em branco */ }  
+{digit}+                    {return LIT_INT;} //inteiros
+{digit}+"."{digit+           {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
+special_caracters         {return yytext;} // Retorna o código ASCII do caracter
    
-    //string                   {return LIT_STRING;}
 "//".*                   { /* Ignora comentários de linha simples única*/ }
-
-"/*"                     { BEGIN COMMENT; }/* . {}  para ignorar otros caracteres  */
-
-<COMMENT> "/:"           { BEGIN INITIAL; } // Fim do comentário
-<COMMENT>   \n { ++line_number; }
-<COMMENT>
 
 
 %%
