@@ -22,33 +22,33 @@ specialcaracters [,;:()[]{}=+-*/%<>&|~]
 %%
     /* Seção 2: Regras */
     //Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.
-"int"                     {fprintf(stderr, "KW_INT");}
-"char"                    {fprintf(stderr, "KW_CHAR");}
-"float"                   {fprintf(stderr, "KW_FLOAT");}
-"bool"                    {fprintf(stderr, "KW_BOOL");}
-"if"                      {fprintf(stderr, "KW_IF");}
-"else"                    {fprintf(stderr, "KW_ELSE");}
-"do"                      {fprintf(stderr, "KW_DO");}
-"while"                   {fprintf(stderr, "KW_WHILE");}
-"read"                    {fprintf(stderr, "KW_READ");}
-"print"                   {fprintf(stderr, "KW_PRINT");}
-"return"                  {fprintf(stderr, "KW_RETURN");}
+"int"                     {return KW_INT;}
+"char"                    {return KW_CHAR;}
+"float"                   {return KW_FLOAT;}
+"bool"                    {return KW_BOOL;}
+"if"                      {return KW_IF;}
+"else"                    {return KW_ELSE;}
+"do"                      {return KW_DO;}
+"while"                   {return KW_WHILE;}
+"read"                    {return KW_READ;}
+"print"                   {return KW_PRINT;}
+"return"                  {return KW_RETURN;}
     //Tratar os literais booleanos `true` e `false` como palavras reservadas.
-"true"                    {fprintf(stderr, "LIT_TRUE");}
-"false"                   {fprintf(stderr, "LIT_FALSE");}
+"true"                    {return LIT_TRUE;}
+"false"                   {return LIT_FALSE;}
 
-[a-zA-Z][a-zA-Z0-9]*      {fprintf(stderr, "ID");}
-[-+*/=()]                 {fprintf(stderr, "OPERADORES");}
-\n                        {++line_number;} }
+[a-zA-Z][a-zA-Z0-9]*      {return ID;}
+[-+*/=()]                 {return OPERADORES;}
+\n                        {++line_number;}
 [ \t]+ { /* Ignora espaços em branco */ }
     //**Inteiros:** Reconhecer sequências de um ou mais dígitos decimais.
-digit+                    {fprintf(stderr, "LIT_INT");}
+digit+                    {return LIT_INT;}
     //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
-digit+"."digit+          {fprintf(stderr, "LIT_FLOAT");}
+digit+"."digit+          {return LIT_FLOAT;}
     // Retornar o código ASCII convertido para inteiro para os seguintes caracteres:
 specialcaracters        {return yytext;} // Retorna o código ASCII do caracter
    
-    //string                   {fprintf(stderr, "LIT_STRING");}
+    //string                   {return LIT_STRING;}
 "//".*                   { /* Ignora comentários de linha simples única*/ }
 
 "/*"                     { BEGIN COMMENT; }/* . {}  para ignorar otros caracteres  */
