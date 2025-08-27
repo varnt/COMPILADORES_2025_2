@@ -1,18 +1,30 @@
 /* Seção 1: Definições */
 %{
-    // Seção 1.1 Código C (e.g., #include, declarações de variáveis e funções)
+    // Seção 1.1 Código C++ Aluno Victor de Souza Arnt Matricula 00201097 
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
     #include "main.cpp"
     #include "tokens.h"
+    #include "symbols.hpp"
 
     int line_number = 1; // Variável para rastrear o número da linha
     bool is_running = true; // Variável para controlar a execução do scanner
     
+    //funções solicitadas no enunciado
+    void yyerror(const char *s);
+    int yywrap(void);
+    int getLineNumber(void);
+    int isRunning(void);
+    std::map<std::string, int> SymbolTypes;
+
+    // A função para buscar palavras reservadas em uma tabela, otimizando o analisador.
+    // Uma boa prática para evitar regras léxicas individuais para cada palavra.
+    int check_reserved(const std::string& lexeme);
+    
 %}
 /* Aluno Victor de Souza Arnt Matricula 00201097 */
-/* Substituições (opcional) */
+/* Substituições 1.2 (opcional) */
 /* Exemplo: */
 digit [0-9]
 /* Letras minusculas */
@@ -36,12 +48,11 @@ literal_char    '[^'\n]'
 /* Cadeia de caracteres entre aspas duplas */
 literal_string    \"(\\.|[^"\n])*\"
 
-              
 %x STRING COMMENT_ML
 
 %%
     /* Seção 2: Regras */
-    /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS*/
+    /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS - Aluno Victor de Souza Arnt Matricula 00201097 */
 
 "//".*                   { /* Ignora comentários de linha simples única*/ }
 
@@ -92,11 +103,59 @@ special_caracters         {return yytext;} //retorna o código ASCII do caracter
 
     /* Regra especial para fim de arquivo */
 <<EOF>>                   { is_running = false; return 0; }
+    /* Tratamento de Erros: A regra de captura para qualquer caractere não correspondido. */
+
+.                         { yyerror("Caractere inválido"); return UNKNOWN_TOKEN; }
    
 
 
 
 %%
 /* Seção 3: Sub-rotinas */
-main(); // Chama a função principal do main.cpp
 
+// yywrap: Chamada ao final do arquivo de entrada. Retorna 1 para parar o processamento.
+    int yywrap(void) {
+        return 1;
+    }
+
+    // yyerror: Chamada em caso de erro.
+    void yyerror(const char *s) {
+        std::cerr << "Erro léxico na linha " << line_number << ": " << s << " em '" << yytext << "'" << std::endl;
+    }
+
+    // Funções de controle de estado e número de linha
+    int getLineNumber(void) {
+        return line_number;
+    }
+    int isRunning(void) {
+        return is_running;
+    }
+
+    // Função para buscar palavras reservadas. Mantém uma tabela estática
+    // para evitar a re-inicialização a cada chamada.
+    int check_reserved(const std::string& lexeme) {
+        static std::map<std::string, int> reserved_words;
+        if (reserved_words.empty()) {
+            reserved_words["char"] = RW_CHAR;
+            reserved_words["int"] = RW_INT;
+            reserved_words["float"] = RW_FLOAT;
+            reserved_words["bool"] = RW_BOOL;
+            reserved_words["if"] = RW_IF;
+            reserved_words["else"] = RW_ELSE;
+            reserved_words["do"] = RW_DO;
+            reserved_words["while"] = RW_WHILE;
+            reserved_words["read"] = RW_READ;
+            reserved_words["print"] = RW_PRINT;
+            reserved_words["return"] = RW_RETURN;
+            reserved_words["true"] = LIT_TRUE;
+            reserved_words["false"] = LIT_FALSE;
+        }
+        
+        auto it = reserved_words.find(lexeme);
+        if (it!= reserved_words.end()) {
+            return it->second;
+        }
+        return 0;
+    }
+
+    main(); // Chama a função principal do main.cpp
