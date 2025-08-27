@@ -19,7 +19,8 @@ letter_low [a-z]
 letter_up [A-Z]
 special_caracters [,;:()[]{}=+-*/%<>&|~] 
 /*Definição de palavras com base em caracteres e digitos*/
-identifier      (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*) 
+/Identificador começa com uma letra (maiúscula ou minúscula) ou um sublinhado (_), seguido por qualquer combinação de letras, dígitos ou sublinhados. */
+identifier      (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*)  
 literal_int     {digit}+
 literal_float   {digit}+"."{digit}+
               
@@ -45,12 +46,11 @@ literal_float   {digit}+"."{digit}+
 ">="                      {return OPERATOR_GE;}
 "=="                      {return OPERATOR_EQ;}
 "!="                      {return OPERATOR_DIF;}
-[a-zA-Z][a-zA-Z0-9]*      {return ID;} //revisar ta errado certo
-[-+*/=()]                 {return OPERADORES;} //revisar
+identifier                {return TK_IDENTIFIER;} // Identificadores
 \n                        {++line_number;} //revisar
 [ \t]+                    { /* Ignora espaços em branco */ }  
-{digit}+                    {return LIT_INT;} //inteiros
-{digit}+"."{digit+           {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.
+{digit}+                  {return LIT_INT;} //inteiros
+{digit}+"."{digit}+       {return LIT_FLOAT;} //**Reais:** Reconhecer a parte inteira seguida do ponto decimal e da parte fracionária, onde ambas as partes precisam ter ao menos um dígito.**//
 special_caracters         {return yytext;} // Retorna o código ASCII do caracter
    
 "//".*                   { /* Ignora comentários de linha simples única*/ }
