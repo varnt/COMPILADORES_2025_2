@@ -15,8 +15,13 @@
 /* Substituições (opcional) */
 /* Exemplo: */
 digit [0-9]
-letter [A-Za-z]
+letter_low [a-z]
+letter_up [A-Z]
 specialcaracters [,;:()[]{}=+-*/%<>&|~] 
+/*Definição de palavras com base em caracteres e digitos*/
+identifier (({letter_low}|{letter_up}|_)+( {letter_low}|{letter_up}|_|{digit})*) 
+LIT_TRUE "true"
+LIT_FALSE "false"
 
 
 %%
@@ -33,9 +38,9 @@ specialcaracters [,;:()[]{}=+-*/%<>&|~]
 "read"                    {return KW_READ;}
 "print"                   {return KW_PRINT;}
 "return"                  {return KW_RETURN;}
-    //Tratar os literais booleanos `true` e `false` como palavras reservadas.
-"true"                    {return LIT_TRUE;}
-"false"                   {return LIT_FALSE;}
+    //Tratar os literais booleanos true e false como palavras reservadas.
+LIT_TRUE                  {return LIT_TRUE;}
+LIT_FALSE                 {return LIT_FALSE;}
 
 [a-zA-Z][a-zA-Z0-9]*      {return ID;}
 [-+*/=()]                 {return OPERADORES;}
