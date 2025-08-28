@@ -64,9 +64,31 @@ sudo apt upgrade
 - [Bison Manual](https://www.gnu.org/software/bison/manual/bison.html)
 - [C Language Reference](https://en.cppreference.com/w/c/language)
 
-# Chave para submissão do arquivo pelo sistema do prof
+# 🗝️ Chave para submissão do arquivo pelo sistema do prof
 A string abaixo é sua chave individual, criada para que somente quem conheça essa string possa acessar os arquivos da etapa do trabalho de Compiladores submetido no servidor http, que estarão em um subdiretório de mesmo nome, conforme instruções dadas no arquivo format1_pdf e explicadas em aula. Essa informação é privada, e não deve ser compartilhada:
 ```
 uzplumqlyfxeqblr
 ```
-
+# 🖥️ Script para submissão do arquivo pelo sistema do prof
+Fazer o pacote para o prof.
+```
+make pkge1
+```
+Logar no SFTP
+```
+sftp -oHostKeyAlgorithms=+ssh-rsa vsarnt@html.inf.ufrgs.br
+```
+Digita yes
+Digita a senha do inf
+Dentro da sessão SFTP, executar:
+```
+cd public_html
+mkdir uzplumqlyfxeqblr
+cd uzplumqlyfxeqblr
+put etapa1.tgz
+chmod 744 etapa1.tgz
+cd ..
+chmod 711 uzplumqlyfxeqblr
+chmod 711 public_html
+exit
+```
