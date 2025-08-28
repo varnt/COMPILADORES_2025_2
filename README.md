@@ -89,6 +89,7 @@ put etapa1.tgz
 chmod 744 etapa1.tgz
 cd ..
 chmod 711 uzplumqlyfxeqblr
+cd ..
 chmod 711 public_html
 exit
 ```

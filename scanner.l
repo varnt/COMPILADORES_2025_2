@@ -7,6 +7,7 @@
     #include <iostream>
     #include "tokens.h"
     #include "symbols.hpp"
+    #include <map>
 
     int line_number = 1; // Variável para rastrear o número da linha
     bool is_running = true; // Variável para controlar a execução do scanner
