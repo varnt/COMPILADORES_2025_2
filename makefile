@@ -28,5 +28,8 @@ clean:
 # Regra para executar testes (opcional)
 test: etapa1
 	./etapa1 < test.txt
+	
+pkge1:
+	tar cvzf etapa1.tgz main.cpp makefile scanner.l tokens.h symbols.cpp symbols.hpp
 
 #EOF
