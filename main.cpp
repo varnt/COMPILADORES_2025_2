@@ -1,25 +1,38 @@
-
-#include <iostream>
-#include <string>
-#include "symbols.hpp"
 #include "tokens.h"
-
-// Declaração da função principal do analisador léxico, gerada pelo Flex
+#include "symbols.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+//Aluno Victor de Souza Arnt Matricula 00201097
+// Declarações externas para funções do flex
 extern int yylex();
+extern char* yytext;
 
-// Declaração da função de erro, que deve ser implementada para lidar com erros léxicos
-void yyerror(const char* s);
+// Variáveis globais para controle do scanner
+extern int line_number;
+extern bool is_running;
+extern int getLineNumber(void);
+extern int isRunning(void);
 
-int main() {
-    // Inicia a análise léxica
-    yylex();
 
-    // Retorna 0 para indicar que o programa terminou com sucesso
-    return 0;
+// Implementação do yywrap com linkage C
+extern "C" {
+    int yywrap() {
+        is_running = false;  // Marca fim da análise
+        return 1;
+    }
 }
 
-// Implementação da função de erro. Esta é uma versão básica para o escopo inicial
-void yyerror(const char* s) {
-    // Imprime a mensagem de erro fornecida
-    std::cerr << "Erro léxico: " << s << std::endl;
+int main() {
+    int token;
+    
+    // Continua até encontrar EOF
+    while((token = yylex()) != 0) {
+        printf("Token: %d, Lexeme: %s, Line: %d\n", token, yytext, getLineNumber());
+    }
+    
+    // Imprime tabela de símbolos ao final
+    printSymbolTable();
+    
+    return 0;
 }

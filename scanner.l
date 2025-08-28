@@ -4,7 +4,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include "main.cpp"
+    #include <iostream>
     #include "tokens.h"
     #include "symbols.hpp"
 
@@ -13,10 +13,8 @@
     
     //funções solicitadas no enunciado
     void yyerror(const char *s);
-    int yywrap(void);
     int getLineNumber(void);
     int isRunning(void);
-    std::map<std::string, int> SymbolTypes;
 
     // A função para buscar palavras reservadas em uma tabela, otimizando o analisador.
     // Uma boa prática para evitar regras léxicas individuais para cada palavra.
@@ -32,23 +30,25 @@ letter_low [a-z]
 /* Letras maiusculas */
 letter_up [A-Z]
 /* Letras minusculas ou maiusculas */
-letter {letter_low|letter_up}
+letter {letter_low}|{letter_up}
 /* Letras ou digitos */
-alphanum {letter_low|letter_up|digit}
+alphanum {letter_low}|{letter_up}|{digit}
 /* Caracteres especiais */
-special_caracters [,;:()[]{}=+-*/%<>&|~] 
+special_caracters [,;:()[\]{}=+\-*/%<>&|~] 
 
-/* Identificador começa com uma letra (maiúscula ou minúscula) ou um sublinhado (_), seguido por qualquer combinação de letras, dígitos ou sublinhados. */
-identifier      (({letter}|_)+( {alphanum}|_)*)
+/* Identificador corrigido: pode conter hífen conforme especificação */
+identifier      ({letter}|[_\-])({alphanum}|[_\-])*
 /* Literais */
 literal_int     {digit}+
 literal_float   {digit}+"."{digit}+
-/* Caracteres entre aspas simples, exceto aspas simples e nova linha */
-literal_char    '[^'\n]' 
+/* Caracteres entre aspas simples com suporte a escape */
+literal_char    '[^'\n\\]'|'\\[n"\\]'
 /* Cadeia de caracteres entre aspas duplas */
-literal_string    \"(\\.|[^"\n])*\"
+literal_string    \"(\\.|[^"\n\\])*\"
 
 %x STRING COMMENT_ML
+
+%option noyywrap 
 
 %%
     /* Seção 2: Regras */
@@ -67,9 +67,9 @@ literal_string    \"(\\.|[^"\n])*\"
 "=="                      {return OPERATOR_EQ;}
 "!="                      {return OPERATOR_DIF;}
 
-    /*Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.*//
-"int"                     {return KW_INT;}
+    /*Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.*/
 "char"                    {return KW_CHAR;}
+"int"                     {return KW_INT;}
 "float"                   {return KW_FLOAT;}
 "bool"                    {return KW_BOOL;}
 "if"                      {return KW_IF;}
@@ -79,46 +79,27 @@ literal_string    \"(\\.|[^"\n])*\"
 "read"                    {return KW_READ;}
 "print"                   {return KW_PRINT;}
 "return"                  {return KW_RETURN;}
-"true"                    {return LIT_TRUE;}
-"false"                   {return LIT_FLASE;}
+"true"                    {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_TRUE;}
+"false"                   {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_FLASE;}
 
+identifier                {insertSymbolTable(yytext, SYMBOL_IDENTIFIER); return TK_IDENTIFIER;} //identificadores com inserção na tabela
+literal_float             {insertSymbolTable(yytext, SYMBOL_LITERAL_FLOAT); return LIT_FLOAT;} //reais com inserção na tabela
+literal_int               {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_INT;} //inteiros com inserção na tabela
+literal_char              {insertSymbolTable(yytext, SYMBOL_LITERAL_CHAR); return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
+literal_string            {insertSymbolTable(yytext, SYMBOL_LITERAL_STRING); return LIT_STRING;} //strings com inserção na tabela
 
-identifier                {return TK_IDENTIFIER;} //identificadores
-literal_float             {return LIT_FLOAT;} //reais
-literal_int               {return LIT_INT;} //inteiros
-literal_char              {return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
-
-    /* Início de uma string literal. Usa condição de início exclusiva.*/
-\"                         { BEGIN STRING; }
-    /* Dentro do estado `STRING`, processa caracteres de escape*/
-<STRING>\"                 {BEGIN INITIAL; return LIT_STRING;} // Fim da string
-<STRING>\\\"               {/* Trata a sequência de escape */}
-<STRING>\\n                {/* Trata a sequência de escape */}
-<STRING>\n                 {yyerror("Literal de string não terminada"); ++line_number; BEGIN INITIAL;}
-<STRING>.                  {/* Adiciona o caractere à string literal */}
-
-special_caracters         {return yytext;} //retorna o código ASCII do caracter
+special_caracters         {return yytext[0];} //CORRIGIDO: retorna o código ASCII do caracter usando yytext[0]
 [ \t]+                    { /* Ignora espaços em branco */ }
 \n                        {++line_number;} 
 
     /* Regra especial para fim de arquivo */
 <<EOF>>                   { is_running = false; return 0; }
-    /* Tratamento de Erros: A regra de captura para qualquer caractere não correspondido. */
-
-.                         { yyerror("Caractere inválido"); return UNKNOWN_TOKEN; }
-   
-
-
+.                         { yyerror("Caractere inválido"); return TOKEN_ERROR; }
 
 %%
 /* Seção 3: Sub-rotinas */
 
-// yywrap: Chamada ao final do arquivo de entrada. Retorna 1 para parar o processamento.
-    int yywrap(void) {
-        return 1;
-    }
-
-    // yyerror: Chamada em caso de erro.
+// yyerror: Chamada em caso de erro.
     void yyerror(const char *s) {
         std::cerr << "Erro léxico na linha " << line_number << ": " << s << " em '" << yytext << "'" << std::endl;
     }
@@ -128,7 +109,7 @@ special_caracters         {return yytext;} //retorna o código ASCII do caracter
         return line_number;
     }
     int isRunning(void) {
-        return is_running;
+        return is_running ? 1 : 0; // CORRIGIDO: retorna 1 ou 0 conforme especificação
     }
 
     // Função para buscar palavras reservadas. Mantém uma tabela estática
@@ -148,14 +129,12 @@ special_caracters         {return yytext;} //retorna o código ASCII do caracter
             reserved_words["print"] = KW_PRINT;
             reserved_words["return"] = KW_RETURN;
             reserved_words["true"] = LIT_TRUE;
-            reserved_words["false"] = LIT_FLASE;
+            reserved_words["false"] = LIT_FLASE; 
         }
         
         auto it = reserved_words.find(lexeme);
-        if (it!= reserved_words.end()) {
+        if (it != reserved_words.end()) {
             return it->second;
         }
         return 0;
     }
-
-    main(); // Chama a função principal do main.cpp
