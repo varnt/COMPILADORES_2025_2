@@ -11,7 +11,7 @@
 
     int line_number = 1; // Variável para rastrear o número da linha
     bool is_running = true; // Variável para controlar a execução do scanner
-    
+    void  initMe(void);
     //funções solicitadas no enunciado
     void yyerror(const char *s);
     int getLineNumber(void);
@@ -38,7 +38,7 @@ alphanum ({letter_low}|{letter_up}|{digit})
 /* Identificador : pode conter hífen conforme especificação */
 identifier      ({letter}|[_\-])({alphanum}|[_\-])*
 /* Literais */
-literal_int     ({digit}+)
+literal_int     {digit}+
 literal_float   ({digit}+"."{digit}+)
 /* Caracteres entre aspas simples com suporte a escape */
 literal_char    '[^'\n\\]'|'\\[n"\\]'
@@ -81,11 +81,11 @@ literal_string    \"(\\.|[^"\n\\])*\"
 "true"                    {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_TRUE;}
 "false"                   {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_FLASE;}
 
-literal_int               {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_INT;} //inteiros com inserção na tabela
-literal_float             {insertSymbolTable(yytext, SYMBOL_LITERAL_FLOAT); return LIT_FLOAT;} //reais com inserção na tabela
-identifier                {insertSymbolTable(yytext, SYMBOL_IDENTIFIER); return TK_IDENTIFIER;} //identificadores com inserção na tabela
-literal_char              {insertSymbolTable(yytext, SYMBOL_LITERAL_CHAR); return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
-literal_string            {insertSymbolTable(yytext, SYMBOL_LITERAL_STRING); return LIT_STRING;} //strings com inserção na tabela
+{literal_int}               {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_INT;} //inteiros com inserção na tabela
+{literal_float}             {insertSymbolTable(yytext, SYMBOL_LITERAL_FLOAT); return LIT_FLOAT;} //reais com inserção na tabela
+{identifier}                {insertSymbolTable(yytext, SYMBOL_IDENTIFIER); return TK_IDENTIFIER;} //identificadores com inserção na tabela
+{literal_char}              {insertSymbolTable(yytext, SYMBOL_LITERAL_CHAR); return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
+{literal_string}            {insertSymbolTable(yytext, SYMBOL_LITERAL_STRING); return LIT_STRING;} //strings com inserção na tabela
 
 [,;:()[\]{}=+\-*/%<>&|~]  {return yytext[0];} //retorna o código ASCII do caracter usando yytext[0]
 [ \t]+                    { /* Ignora espaços em branco */ }
