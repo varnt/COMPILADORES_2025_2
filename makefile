@@ -30,6 +30,7 @@ test: etapa1
 	./etapa1 < test.txt
 	
 pkge1:
-	tar cvzf etapa1.tgz main.cpp makefile scanner.l tokens.h symbols.cpp symbols.hpp
+	rm etapa1.tgz
+	tar cvzf etapa1.tgz main.cpp makefile scanner.l tokens.h symbols.cpp symbols.hpp e1teste.txt
 
 #EOF

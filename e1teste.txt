@@ -1,0 +1,66 @@
+// Teste de palavras reservadas
+char int float bool
+if else do while read print return
+true false
+
+// Teste de operadores compostos
+<= >= == !=
+
+// Teste de caracteres especiais
+; : ( ) [ ] { } = + - * / % < > &
+
+// Teste de identificadores
+meu_identificador
+outro-id
+var-1
+_teste
+-2 // Este é um identificador válido de acordo com a especificação.
+var_com_sub_1
+
+// Teste de literais inteiros
+123 456 7890
+
+// Teste de literais reais
+1.23 45.67 8.90
+
+// Teste de literais de caracteres
+'a' 'X' '-' '1' '#'
+
+// Teste de literais de strings
+"string de teste"
+"com espacos"
+"Com operadores, por exemplo: <= >= == != "
+
+/*
+Este é um comentário
+de múltiplas linhas
+com quebras de linha.
+Conforme a especificação,
+o analisador deve contá-las
+para o número de linha.
+*/
+
+// Teste de caracteres inválidos (fora das regras definidas)
+? @ ! ^ ¨ º ª § $ 
+
+// Mais código com mistura de tokens
+int main()
+{
+    int var1 = 10;
+    float var-float = 5.67;
+
+    if (var1 >= var-float)
+    {
+        print "var1 é maior ou igual a var-float\n";
+    }
+    else
+    {
+        read var1;
+        var1 = var1 * 2;
+    }
+
+    while (var1 < 50)
+    {
+        var1 = var1 + 5;
+    }
+}
