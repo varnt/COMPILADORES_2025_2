@@ -7,7 +7,6 @@
 // Declarações externas para funções do flex
 extern int yylex();
 extern char* yytext;
-extern void  initMe(void);
 // Variáveis globais para controle do scanner
 extern int line_number;
 extern bool is_running;
