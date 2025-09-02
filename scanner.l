@@ -107,4 +107,3 @@ literal_string    \"(\\.|[^"\n\\])*\"
     int isRunning(void) {
         return is_running ? 1 : 0; 
     }
-

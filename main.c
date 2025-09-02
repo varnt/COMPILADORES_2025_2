@@ -8,7 +8,10 @@ extern FILE *yyin;
 
 
 int isRunning(void);
-void initMe(void);
+void initMe(void){
+  return;
+  
+}
 
 int main(int argc, char** argv)
   {
