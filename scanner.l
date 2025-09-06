@@ -85,7 +85,7 @@ literal_string    \"(\\.|[^"\n\\])*\"
 {literal_char}              {insertSymbolTable(yytext, SYMBOL_LITERAL_CHAR); return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
 {literal_string}            {insertSymbolTable(yytext, SYMBOL_LITERAL_STRING); return LIT_STRING;} //strings com inserção na tabela
 
-
+ 
 [ \t]+                    { /* Ignora espaços em branco */ }
 \n                        {++line_number;} 
 
