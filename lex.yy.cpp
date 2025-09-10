@@ -515,7 +515,8 @@ char *yytext;
     #include <stdlib.h>
     #include <string.h>
     #include <iostream>
-    #include "tokens.h"
+    //#include "tokens.h" //removido conforme etapa2
+    #include "parser.tab.h"    //Seguindo slide Bison pg. 7 Lucas schnorr sim eu estou vendo os slides do outro professor tb 😅
     #include "symbols.hpp"
     #include <map>
 
@@ -528,7 +529,7 @@ char *yytext;
     int isRunning(void);
 
     
-#line 532 "lex.yy.cpp"
+#line 533 "lex.yy.cpp"
 /* Aluno Victor de Souza Arnt Matricula 00201097 */
 /* Substituições 1.2 (opcional) */
 /* Exemplo: */
@@ -541,7 +542,7 @@ char *yytext;
 /* Caracteres entre aspas simples com suporte a escape */
 /* Cadeia de caracteres entre aspas duplas */
 
-#line 545 "lex.yy.cpp"
+#line 546 "lex.yy.cpp"
 
 #define INITIAL 0
 #define STRING 1
@@ -760,13 +761,13 @@ YY_DECL
 		}
 
 	{
-#line 49 "scanner.l"
+#line 50 "scanner.l"
 
-#line 51 "scanner.l"
+#line 52 "scanner.l"
     /* Seção 2: Regras */
     /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS - Aluno Victor de Souza Arnt Matricula 00201097 */
 
-#line 770 "lex.yy.cpp"
+#line 771 "lex.yy.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -825,176 +826,176 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 54 "scanner.l"
+#line 55 "scanner.l"
 { /* Ignora comentários de linha simples única*/ }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 56 "scanner.l"
+#line 57 "scanner.l"
 { BEGIN COMMENT_ML;} /* Inicia o estado de comentário multilinha, adaptado de código exercitado em aula.*/
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 57 "scanner.l"
+#line 58 "scanner.l"
 { BEGIN INITIAL;}    
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 58 "scanner.l"
+#line 59 "scanner.l"
 { ++line_number;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 59 "scanner.l"
+#line 60 "scanner.l"
 { /* Ignora */}
 	YY_BREAK
 /* Operadores Compostos: devem ser colocados antes dos operadores simples */
 case 6:
 YY_RULE_SETUP
-#line 62 "scanner.l"
+#line 63 "scanner.l"
 {return OPERATOR_LE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 63 "scanner.l"
+#line 64 "scanner.l"
 {return OPERATOR_GE;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 64 "scanner.l"
+#line 65 "scanner.l"
 {return OPERATOR_EQ;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 65 "scanner.l"
+#line 66 "scanner.l"
 {return OPERATOR_DIF;}
 	YY_BREAK
 /*Reconhecer e retornar o token correspondente para as palavras `char`, `int`, `float`, `bool`, `if`, `else`, `do`, `while`, `read`, `print`, `return`.*/
 case 10:
 YY_RULE_SETUP
-#line 68 "scanner.l"
+#line 69 "scanner.l"
 {return KW_CHAR;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 69 "scanner.l"
+#line 70 "scanner.l"
 {return KW_INT;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 70 "scanner.l"
+#line 71 "scanner.l"
 {return KW_FLOAT;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 71 "scanner.l"
+#line 72 "scanner.l"
 {return KW_BOOL;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 72 "scanner.l"
+#line 73 "scanner.l"
 {return KW_IF;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 73 "scanner.l"
+#line 74 "scanner.l"
 {return KW_ELSE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 74 "scanner.l"
+#line 75 "scanner.l"
 {return KW_DO;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 75 "scanner.l"
+#line 76 "scanner.l"
 {return KW_WHILE;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 76 "scanner.l"
+#line 77 "scanner.l"
 {return KW_READ;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 77 "scanner.l"
+#line 78 "scanner.l"
 {return KW_PRINT;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 78 "scanner.l"
+#line 79 "scanner.l"
 {return KW_RETURN;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 79 "scanner.l"
+#line 80 "scanner.l"
 {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_TRUE;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 80 "scanner.l"
+#line 81 "scanner.l"
 {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_FLASE;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 82 "scanner.l"
+#line 83 "scanner.l"
 {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_INT;} //inteiros com inserção na tabela
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 83 "scanner.l"
+#line 84 "scanner.l"
 {insertSymbolTable(yytext, SYMBOL_LITERAL_FLOAT); return LIT_FLOAT;} //reais com inserção na tabela
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 84 "scanner.l"
+#line 85 "scanner.l"
 {return yytext[0];} //retorna o código ASCII do caracter usando yytext[0]
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 85 "scanner.l"
+#line 86 "scanner.l"
 {insertSymbolTable(yytext, SYMBOL_IDENTIFIER); return TK_IDENTIFIER;} //identificadores com inserção na tabela
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 86 "scanner.l"
+#line 87 "scanner.l"
 {insertSymbolTable(yytext, SYMBOL_LITERAL_CHAR); return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 87 "scanner.l"
+#line 88 "scanner.l"
 {insertSymbolTable(yytext, SYMBOL_LITERAL_STRING); return LIT_STRING;} //strings com inserção na tabela
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 90 "scanner.l"
+#line 91 "scanner.l"
 { /* Ignora espaços em branco */ }
 	YY_BREAK
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
-#line 91 "scanner.l"
+#line 92 "scanner.l"
 {++line_number;} 
 	YY_BREAK
 /* Regra especial para fim de arquivo */
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(STRING):
 case YY_STATE_EOF(COMMENT_ML):
-#line 94 "scanner.l"
+#line 95 "scanner.l"
 { is_running = false; return 0; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 95 "scanner.l"
+#line 96 "scanner.l"
 { yyerror("Caractere inválido"); return TOKEN_ERROR; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 97 "scanner.l"
+#line 98 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 998 "lex.yy.cpp"
+#line 999 "lex.yy.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1997,7 +1998,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 97 "scanner.l"
+#line 98 "scanner.l"
 
 /* Seção 3: Sub-rotinas */
 

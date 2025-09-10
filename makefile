@@ -42,7 +42,6 @@ pkge1:
 	tar cvzf etapa1.tgz main.cpp makefile scanner.l tokens.h symbols.cpp symbols.hpp e1teste.txt
 pkge2:
 	rm etapa2.tgz
-	tar cvzf etapa2.tgz main.cpp makefile scanner.l tokens.h symbols.cpp symbols.hpp e2teste.txt
-
+	tar cvzf etapa2.tgz main.cpp makefile scanner.l parser.ypp symbols.cpp symbols.hpp 
 
 #EOF

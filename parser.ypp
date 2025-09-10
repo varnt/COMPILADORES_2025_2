@@ -11,12 +11,16 @@ void yyerror (char const *mensagem);  //Função de erro
 
 %start programa
 %define parse.error verbose 
+%token KW_CHAR
 %token KW_INT  
 %token KW_FLOAT
 %token KW_BOOL
 %token KW_IF
 %token KW_ELSE
+%token KW_DO
 %token KW_WHILE
+%token KW_READ
+%token KW_PRINT
 %token KW_RETURN
 %token OPERATOR_LE
 %token OPERATOR_GE
@@ -32,9 +36,242 @@ void yyerror (char const *mensagem);  //Função de erro
 %token TOKEN_ERROR
 %%
 
-%%
-int yyerror(string msg) { 
-    printf(stderr, "Erro de sintaxe na linha %d\n", getLineNumber()); //todo referenciar getLineNumber
-    exit(3); //todo: implementar tratamento de erro
+// Regras gramaticais
 
-}  
+// Programa principal: lista de declarações globais
+programa: lista_declaracoes
+        ;
+
+// Lista de declarações globais (variáveis, vetores ou funções)
+lista_declaracoes: declaracao lista_declaracoes
+                 | declaracao
+                 ;
+
+// Declaração pode ser de variável, vetor ou função
+declaracao: declaracao_variavel
+          | declaracao_funcao
+          ;
+
+// Declaração de variável: tipo identificador = literal ;
+declaracao_variavel: tipo TK_IDENTIFIER '=' literal ';'
+                    {
+                        // Inserir na tabela de símbolos como variável
+                        insertSymbolTable($2, SYMBOL_VARIABLE);
+                    }
+                   | tipo TK_IDENTIFIER '[' LIT_INT ']' ';'
+                    {
+                        // Inserir na tabela de símbolos como vetor
+                        insertSymbolTable($2, SYMBOL_VECTOR);
+                    }
+                   | tipo TK_IDENTIFIER '[' LIT_INT ']' '=' lista_literais ';'
+                    {
+                        // Inserir na tabela de símbolos como vetor inicializado
+                        insertSymbolTable($2, SYMBOL_VECTOR);
+                    }
+                   ;
+
+// Declaração de função: tipo identificador ( parametros ) declaracoes_locais bloco
+declaracao_funcao: tipo TK_IDENTIFIER '(' parametros ')' declaracoes_locais bloco
+                  {
+                      // Inserir na tabela de símbolos como função
+                      insertSymbolTable($2, SYMBOL_FUNCTION);
+                  }
+                 | tipo TK_IDENTIFIER '(' ')' declaracoes_locais bloco
+                  {
+                      // Função sem parâmetros
+                      insertSymbolTable($2, SYMBOL_FUNCTION);
+                  }
+                 ;
+
+// Tipos da linguagem
+tipo: KW_CHAR
+    | KW_INT
+    | KW_FLOAT
+    | KW_BOOL
+    ;
+
+// Lista de literais para inicialização de vetores
+lista_literais: literal lista_literais
+              | literal
+              ;
+
+// Literais da linguagem
+literal: LIT_INT
+        {
+            // Inserir literal inteiro na tabela de símbolos
+            insertSymbolTable(yytext, SYMBOL_LIT_INT);
+        }
+       | LIT_CHAR
+        {
+            // Inserir literal caractere na tabela de símbolos
+            insertSymbolTable(yytext, SYMBOL_LIT_CHAR);
+        }
+       | LIT_FLOAT
+        {
+            // Inserir literal real na tabela de símbolos
+            insertSymbolTable(yytext, SYMBOL_LIT_FLOAT);
+        }
+       | LIT_TRUE
+        {
+            // Inserir literal booleano true na tabela de símbolos
+            insertSymbolTable(yytext, SYMBOL_LIT_TRUE);
+        }
+       | LIT_FALSE
+        {
+            // Inserir literal booleano false na tabela de símbolos
+            insertSymbolTable(yytext, SYMBOL_LIT_FLASE);
+        }
+       ;
+
+// Parâmetros de função
+parametros: parametro ',' parametros
+          | parametro
+          ;
+
+parametro: tipo TK_IDENTIFIER
+          {
+              // Inserir parâmetro na tabela de símbolos
+              insertSymbolTable($2, SYMBOL_VARIABLE);
+          }
+         ;
+
+// Declarações de variáveis locais
+declaracoes_locais: declaracao_variavel declaracoes_locais
+                  | /* vazio */
+                  ;
+
+// Bloco de comandos
+bloco: '{' lista_comandos '}'
+     | '{' '}'
+     ;
+
+// Lista de comandos
+lista_comandos: comando lista_comandos
+              | comando
+              ;
+
+// Comandos da linguagem
+comando: comando_atribuicao
+       | comando_controle
+       | comando_read
+       | comando_print
+       | comando_return
+       | bloco
+       | ';'  // Comando vazio
+       ;
+
+// Comando de atribuição
+comando_atribuicao: TK_IDENTIFIER '=' expressao ';'
+                  | TK_IDENTIFIER '[' expressao ']' '=' expressao ';'
+                  ;
+
+// Comandos de controle de fluxo
+comando_controle: KW_IF '(' expressao ')' comando
+                | KW_IF '(' expressao ')' comando KW_ELSE comando
+                | KW_WHILE '(' expressao ')' comando
+                | KW_DO comando KW_WHILE '(' expressao ')' ';'
+                ;
+
+// Comando read
+comando_read: KW_READ TK_IDENTIFIER ';'
+            ;
+
+// Comando print
+comando_print: KW_PRINT lista_print ';'
+             ;
+
+// Lista de elementos para print
+lista_print: elemento_print lista_print
+           | elemento_print
+           ;
+
+// Elemento para print (string ou expressão)
+elemento_print: LIT_STRING
+               {
+                   // Inserir string na tabela de símbolos
+                   insertSymbolTable(yytext, SYMBOL_LIT_STRING);
+               }
+              | expressao
+              ;
+
+// Comando return
+comando_return: KW_RETURN expressao ';'
+              ;
+
+// Expressões aritméticas
+expressao: expressao '+' expressao
+         | expressao '-' expressao
+         | expressao '*' expressao
+         | expressao '/' expressao
+         | expressao '%' expressao
+         | expressao '<' expressao
+         | expressao '>' expressao
+         | expressao OPERATOR_LE expressao
+         | expressao OPERATOR_GE expressao
+         | expressao OPERATOR_EQ expressao
+         | expressao OPERATOR_DIF expressao
+         | expressao '&' expressao
+         | expressao '|' expressao
+         | '~' expressao
+         | '-' expressao %prec UMINUS
+         | '(' expressao ')'
+         | TK_IDENTIFIER
+         | TK_IDENTIFIER '[' expressao ']'
+         | chamada_funcao
+         | literal
+         ;
+
+// Chamada de função
+chamada_funcao: TK_IDENTIFIER '(' argumentos ')'
+              | TK_IDENTIFIER '(' ')'
+              ;
+
+// Argumentos de função
+argumentos: expressao ',' argumentos
+          | expressao
+          ;
+
+%%
+
+// Código suplementar
+// Aluno Victor de Souza Arnt Matricula 00201097
+
+void yyerror(char const *mensagem) { 
+    fprintf(stderr, "Erro de sintaxe na linha %d\n", yylineno);
+    exit(3);
+}
+
+int main(int argc, char** argv) {
+    // Verificar se foi passado um arquivo como parâmetro
+    if (argc != 2) {
+        fprintf(stderr, "Uso: %s <arquivo>\n", argv[0]);
+        exit(1);
+    }
+    
+    // Abrir o arquivo de entrada
+    FILE* arquivo = fopen(argv[1], "r");
+    if (!arquivo) {
+        fprintf(stderr, "Erro ao abrir o arquivo %s\n", argv[1]);
+        exit(2);
+    }
+    
+    // Definir o arquivo de entrada para o scanner
+    yyin = arquivo;
+    
+    // Inicializar a tabela de símbolos
+    hashInit();
+    
+    // Executar a análise sintática
+    int resultado = yyparse();
+    
+    // Fechar o arquivo
+    fclose(arquivo);
+    
+    // Se chegou até aqui, a análise foi bem-sucedida
+    if (resultado == 0) {
+        printf("Análise sintática concluída com sucesso!\n");
+        exit(0);
+    } else {
+        exit(3);
+    }
+}
