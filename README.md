@@ -53,6 +53,7 @@ Trabalho de Compiladores 2025/2
 ```
 sudo apt install build-essential
 sudo apt install flex
+sudo apt install bison
 sudo apt update
 sudo apt upgrade
 ```

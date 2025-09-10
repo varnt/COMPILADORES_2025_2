@@ -5,7 +5,8 @@
     #include <stdlib.h>
     #include <string.h>
     #include <iostream>
-    #include "tokens.h"
+    //#include "tokens.h" //removido conforme etapa2
+    #include "parser.tab.h"    //Seguindo slide Bison pg. 7 Lucas schnorr sim eu estou vendo os slides do outro professor tb 😅
     #include "symbols.hpp"
     #include <map>
 

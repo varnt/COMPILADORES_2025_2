@@ -1,0 +1,40 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+//#Aluno Victor de Souza Arnt Matricula 00201097
+
+int yylex(void);                      //Função de análise léxica
+extern int yylineno;                  //Contador de linhas
+void yyerror (char const *mensagem);  //Função de erro
+%}
+//Definições
+
+%start programa
+%define parse.error verbose 
+%token KW_INT  
+%token KW_FLOAT
+%token KW_BOOL
+%token KW_IF
+%token KW_ELSE
+%token KW_WHILE
+%token KW_RETURN
+%token OPERATOR_LE
+%token OPERATOR_GE
+%token OPERATOR_EQ
+%token OPERATOR_DIF
+%token TK_IDENTIFIER
+%token LIT_INT
+%token LIT_CHAR
+%token LIT_FLOAT
+%token LIT_TRUE
+%token LIT_FLASE
+%token LIT_STRING
+%token TOKEN_ERROR
+%%
+
+%%
+int yyerror(string msg) { 
+    printf(stderr, "Erro de sintaxe na linha %d\n", getLineNumber()); //todo referenciar getLineNumber
+    exit(3); //todo: implementar tratamento de erro
+
+}  
