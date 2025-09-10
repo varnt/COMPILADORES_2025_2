@@ -151,6 +151,7 @@ declaracao_vetores: tipo TK_IDENTIFIER '[' LIT_INT ']' ';'
                         insertSymbolTable($2, SYMBOL_VECTOR);
                     }
                    ;
+                   
 // Bloco de comandos
 bloco: '{' lista_comandos '}'
      | '{' '}'
