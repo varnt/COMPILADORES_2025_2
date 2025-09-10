@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-//#Aluno Victor de Souza Arnt Matricula 00201097
+//Aluno Victor de Souza Arnt Matricula 00201097
 
 int yylex(void);                      //Função de análise léxica
 extern int yylineno;                  //Contador de linhas
@@ -124,6 +124,7 @@ literal: LIT_INT
        ;
 
 // Parâmetros de função
+//Aluno Victor de Souza Arnt Matricula 00201097
 parametros: parametro ',' parametros
           | parametro
           ;
