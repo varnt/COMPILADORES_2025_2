@@ -139,7 +139,18 @@ parametro: tipo TK_IDENTIFIER
 declaracoes_locais: declaracao_variavel declaracoes_locais
                   | /* vazio */
                   ;
-
+//A linguagem inclui também a declaração de vetores, feita pela definição de seu tamanho inteiro positivo entre colchetes, colocada imediatamente à direita do nome. No caso dos vetores, a inicialização é opcional, e quando presente, será dada pela sequência de valores literais separados por espaços, após um símbolo de igual e antes do terminador ponto-e-vírgula. Se não estiver presente, o terminador ponto-e-vírgula segue imediatamente o tamanho do vetor. Vetores também podem ser dos tipos char, int, bool ou float. 
+declaracao_vetores: tipo TK_IDENTIFIER '[' LIT_INT ']' ';'
+                    {
+                        // Inserir na tabela de símbolos como vetor
+                        insertSymbolTable($2, SYMBOL_VECTOR);
+                    }
+                   | tipo TK_IDENTIFIER '[' LIT_INT ']' '=' lista_literais ';'
+                    {
+                        // Inserir na tabela de símbolos como vetor inicializado
+                        insertSymbolTable($2, SYMBOL_VECTOR);
+                    }
+                   ;
 // Bloco de comandos
 bloco: '{' lista_comandos '}'
      | '{' '}'
