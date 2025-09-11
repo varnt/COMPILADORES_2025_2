@@ -116,7 +116,7 @@ literal: LIT_INT
             // Inserir literal booleano true na tabela de símbolos
             insertSymbolTable(yytext, SYMBOL_LIT_TRUE);
         }
-       | LIT_FALSE
+       | LIT_FLASE
         {
             // Inserir literal booleano false na tabela de símbolos
             insertSymbolTable(yytext, SYMBOL_LIT_FLASE);

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "parser.tab.h" //arquivo gerado com bison -d parser.y
+#include "parser.tab.hpp" //arquivo gerado com bison -d parser.y
 //Aluno Victor de Souza Arnt Matricula 00291097
 // Declarações externas para funções do flex
 extern int yylex();
