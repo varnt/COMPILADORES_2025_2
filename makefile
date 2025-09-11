@@ -21,9 +21,9 @@ lex.yy.cpp: scanner.l
 	flex -o lex.yy.cpp scanner.l 
 
 # Dependências específicas
-main.o: main.cpp tokens.h symbols.hpp parser.tab.h
+main.o: main.cpp tokens.h symbols.hpp parser.tab.hpp
 symbols.o: symbols.cpp symbols.hpp 
-lex.yy.o: lex.yy.cpp tokens.h symbols.hpp parser.tab.h
+lex.yy.o: lex.yy.cpp tokens.h symbols.hpp parser.tab.hpp
 
 
 # Limpeza dos arquivos gerados

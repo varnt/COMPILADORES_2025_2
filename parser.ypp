@@ -1,11 +1,16 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "symbols.hpp"
+#include <map>
+
 //Aluno Victor de Souza Arnt Matricula 00291097
 
 int yylex(void);                      //Função de análise léxica
 extern int yylineno;                  //Contador de linhas
 void yyerror (char const *mensagem);  //Função de erro
+int getLineNumber();              //Função para obter o número da linha atual
 %}
 //Definições
 
