@@ -39,16 +39,6 @@ int getLineNumber();              //Função para obter o número da linha atual
 %token LIT_FLASE
 %token LIT_STRING
 %token TOKEN_ERROR
-
-// Precedência e associatividade dos operadores (do menor para o maior)
-%left '|'
-%left '&'
-%left OPERATOR_EQ OPERATOR_DIF
-%left '<' '>' OPERATOR_LE OPERATOR_GE
-%left '+' '-'
-%left '*' '/' '%'
-%right '~' // not lógico
-%right UMINUS // menos unário
 %%
 
 // Regras gramaticais
