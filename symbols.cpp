@@ -7,6 +7,9 @@ using namespace std;
 // Definição da tabela de símbolos global
 map<string, SYMBOL> SymbolTable;
 
+
+
+
 // Insere um símbolo na tabela de símbolos
 SYMBOL* insertSymbolTable(char* name, int type) {
     string sname(name);

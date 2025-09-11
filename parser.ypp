@@ -3,19 +3,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include "symbols.hpp"
-#include <map>
+
 
 //Aluno Victor de Souza Arnt Matricula 00291097
 
-int yylex(void);                      //Função de análise léxica
-extern int yylineno;                  //Contador de linhas
-void yyerror (char const *mensagem);  //Função de erro
-int getLineNumber();              //Função para obter o número da linha atual
+int yylex(void);                      // Função de análise léxica
+extern char* yytext;                  // Texto do token atual
+extern FILE* yyin;                    // Arquivo de entrada
+extern int yylineno;                  // Contador de linhas
+void yyerror (char const *mensagem);  // Função de erro
+int getLineNumber();                  // Função para obter o número da linha atual
 %}
 //Definições
 
 %start programa
 %define parse.error verbose 
+
+//Tokens
 %token KW_CHAR
 %token KW_INT  
 %token KW_FLOAT
@@ -27,10 +31,14 @@ int getLineNumber();              //Função para obter o número da linha atual
 %token KW_READ
 %token KW_PRINT
 %token KW_RETURN
+
+//Operadores
 %token OPERATOR_LE
 %token OPERATOR_GE
 %token OPERATOR_EQ
 %token OPERATOR_DIF
+
+//Identificadores e Literais
 %token TK_IDENTIFIER
 %token LIT_INT
 %token LIT_CHAR
@@ -277,7 +285,7 @@ int main(int argc, char** argv) {
     yyin = arquivo;
     
     // Inicializar a tabela de símbolos
-    hashInit();
+    insertSymbolTable();
     
     // Executar a análise sintática
     int resultado = yyparse();

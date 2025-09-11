@@ -35,7 +35,7 @@ test1: etapa1
 	./etapa1 < test.txt
 
 test2: etapa2
-	./etapa2 < test.txt
+	./etapa2 < sample.txt
 	
 pkge1:
 	rm etapa1.tgz
