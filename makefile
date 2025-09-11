@@ -13,7 +13,7 @@ etapa2: lex.yy.o main.o symbols.o
 	$(CXX) $(CXXFLAGS) $< -c
 
 # Regra específica para gerar o parser a partir do bison
-parser.tab.cpp parser.tab.h: parser.ypp
+parser.tab.cpp parser.tab.hpp: parser.ypp
 	bison -d -o parser.tab.cpp parser.ypp
 
 # Regra específica para gerar o scanner a partir do flex
@@ -28,7 +28,7 @@ lex.yy.o: lex.yy.cpp tokens.h symbols.hpp parser.tab.h
 
 # Limpeza dos arquivos gerados
 clean:
-	rm -f etapa1 etapa2 lex.yy.cpp *.o
+	rm -f etapa1 etapa2 lex.yy.cpp *.o parser.tab.cpp parser.tab.hpp
 
 # Regra para executar testes (opcional)
 test1: etapa1
