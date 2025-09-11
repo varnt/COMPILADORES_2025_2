@@ -227,27 +227,27 @@ comando_return: KW_RETURN expressao ';'
               ;
 
 // Expressões aritméticas
-expressao: expressao '+' expressao
-         | expressao '-' expressao
-         | expressao '*' expressao
-         | expressao '/' expressao
-         | expressao '%' expressao
-         | expressao '<' expressao
-         | expressao '>' expressao
-         | expressao OPERATOR_LE expressao
-         | expressao OPERATOR_GE expressao
-         | expressao OPERATOR_EQ expressao
-         | expressao OPERATOR_DIF expressao
-         | expressao '&' expressao
-         | expressao '|' expressao
-         | '~' expressao
-         | '-' expressao %prec UMINUS           //examplo: -a + b
-         | '(' expressao ')'                    //exemplo: (a + b) * c    
+expressao: expressao '+' expressao              //exemplo: a + b
+         | expressao '-' expressao              //exemplo: a - b
+         | expressao '*' expressao              //exemplo: a * b
+         | expressao '/' expressao              //exemplo: a / b
+         | expressao '%' expressao              //exemplo: a % b
+         | expressao '<' expressao              //exemplo: a < b
+         | expressao '>' expressao              //exemplo: a > b
+         | expressao OPERATOR_LE expressao      //exemplo: a <= b
+         | expressao OPERATOR_GE expressao      //exemplo: a >= b
+         | expressao OPERATOR_EQ expressao      //exemplo: a == b
+         | expressao OPERATOR_DIF expressao     //exemplo: a != b   
+         | expressao '&' expressao              //exemplo: a && b
+         | expressao '|' expressao              //exemplo: a && b || c
+         | '~' expressao                        //exemplo: !a && b
+         | '-' expressao                        //exemplo: -a + b  no bison menciona sobre %prec UMINUS   fiquei com duvida se era pra colocar ou não
+         | '(' expressao ')'                    //exemplo: (a + b) * c  
          | TK_IDENTIFIER                        //exemplo: a
          | TK_IDENTIFIER '[' expressao ']'      //exemplo: a[2 + 3]
          | chamada_funcao                       //exemplo: funcao(a, b + 2)
          | literal                              //exemplo: 5, 'a', 3.14, true, false
-         ;
+         ;                                      //termina com ponto e virgula
 
 // Chamada de função
 chamada_funcao: TK_IDENTIFIER '(' argumentos ')'
