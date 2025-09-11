@@ -241,8 +241,8 @@ expressao: expressao '+' expressao
          | expressao '&' expressao
          | expressao '|' expressao
          | '~' expressao
-         | '-' expressao %prec UMINUS           
-         | '(' expressao ')'                    // exemplo: (a + b) * c    
+         | '-' expressao %prec UMINUS           //examplo: -a + b
+         | '(' expressao ')'                    //exemplo: (a + b) * c    
          | TK_IDENTIFIER                        //exemplo: a
          | TK_IDENTIFIER '[' expressao ']'      //exemplo: a[2 + 3]
          | chamada_funcao                       //exemplo: funcao(a, b + 2)
