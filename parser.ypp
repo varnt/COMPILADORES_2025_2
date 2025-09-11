@@ -39,6 +39,16 @@ int getLineNumber();              //Função para obter o número da linha atual
 %token LIT_FLASE
 %token LIT_STRING
 %token TOKEN_ERROR
+
+// Precedência e associatividade dos operadores (do menor para o maior)
+%left '|'
+%left '&'
+%left OPERATOR_EQ OPERATOR_DIF
+%left '<' '>' OPERATOR_LE OPERATOR_GE
+%left '+' '-'
+%left '*' '/' '%'
+%right '~' // not lógico
+%right UMINUS // menos unário
 %%
 
 // Regras gramaticais
@@ -100,7 +110,7 @@ lista_literais: literal lista_literais
               | literal
               ;
 
-// Literais da linguagem do Aluno Victor de Souza Arnt Matricula 00201097 
+// Literais da linguagem do Aluno Victor de Souza Arnt Matricula 00291097 
 literal: LIT_INT
         {
             // Inserir literal inteiro na tabela de símbolos
@@ -129,7 +139,7 @@ literal: LIT_INT
        ;
 
 // Parâmetros de função
-//Aluno Victor de Souza Arnt Matricula 00201097
+//Aluno Victor de Souza Arnt Matricula 00291097
 parametros: parametro ',' parametros
           | parametro
           ;
@@ -178,7 +188,7 @@ comando: comando_atribuicao
        | ';'  // Comando vazio
        ;
 
-// Comando de atribuição do Aluno Victor de Souza Arnt Matricula 00201097 
+// Comando de atribuição do Aluno Victor de Souza Arnt Matricula 00291097 
 comando_atribuicao: TK_IDENTIFIER '=' expressao ';'
                   | TK_IDENTIFIER '[' expressao ']' '=' expressao ';'
                   ;
@@ -231,12 +241,12 @@ expressao: expressao '+' expressao
          | expressao '&' expressao
          | expressao '|' expressao
          | '~' expressao
-         | '-' expressao %prec UMINUS
-         | '(' expressao ')'
-         | TK_IDENTIFIER
-         | TK_IDENTIFIER '[' expressao ']'
-         | chamada_funcao
-         | literal
+         | '-' expressao %prec UMINUS           
+         | '(' expressao ')'                    // exemplo: (a + b) * c    
+         | TK_IDENTIFIER                        //exemplo: a
+         | TK_IDENTIFIER '[' expressao ']'      //exemplo: a[2 + 3]
+         | chamada_funcao                       //exemplo: funcao(a, b + 2)
+         | literal                              //exemplo: 5, 'a', 3.14, true, false
          ;
 
 // Chamada de função
@@ -252,7 +262,7 @@ argumentos: expressao ',' argumentos
 %%
 
 // Código suplementar
-// Aluno Victor de Souza Arnt Matricula 00201097
+// Aluno Victor de Souza Arnt Matricula 00291097
 
 void yyerror(char const *mensagem) { 
     fprintf(stderr, "Erro de sintaxe na linha %d\n", yylineno);

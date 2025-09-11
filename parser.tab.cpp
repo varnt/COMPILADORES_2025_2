@@ -1882,7 +1882,7 @@ yyreturnlab:
 
 
 // Código suplementar
-// Aluno Victor de Souza Arnt Matricula 00201097
+// Aluno Victor de Souza Arnt Matricula 00291097
 
 void yyerror(char const *mensagem) { 
     fprintf(stderr, "Erro de sintaxe na linha %d\n", yylineno);
