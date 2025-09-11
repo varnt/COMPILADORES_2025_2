@@ -71,7 +71,7 @@ literal_string    \"(\\.|[^"\n\\])*\"
 "bool"                    {return KW_BOOL;}
 "if"                      {return KW_IF;}
 "else"                    {return KW_ELSE;}
-"do"                      {return KW_DO;}
+"do"                      {return KW_DO;} 
 "while"                   {return KW_WHILE;}
 "read"                    {return KW_READ;}
 "print"                   {return KW_PRINT;}

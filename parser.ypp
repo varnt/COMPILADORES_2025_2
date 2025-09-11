@@ -47,6 +47,7 @@ int getLineNumber();                  // Função para obter o número da linha 
 %token LIT_STRING
 %token TOKEN_ERROR
 
+//precedencia listar por linha por ordem cresecente de prioridade left right para predicao
 %%
 
 // Regras gramaticais
