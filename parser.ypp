@@ -47,6 +47,17 @@ int getLineNumber();                  // Função para obter o número da linha 
 %token LIT_STRING
 %token TOKEN_ERROR
 
+// Precedência dos operadores conforme indicado pelo professor
+%right '='
+%left '|'
+%left '&'
+%left OPERATOR_EQ OPERATOR_DIF
+%left '<' '>' OPERATOR_LE OPERATOR_GE
+%left '+' '-'
+%left '*' '/' '%'
+%right '~' UMINUS  // Operadores unários
+%left '[' ']'      // Acesso a vetores
+
 %%
 
 // Regras gramaticais

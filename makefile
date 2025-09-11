@@ -39,4 +39,4 @@ pkge2:
 	rm -f etapa2.tgz
 	tar cvzf etapa2.tgz makefile scanner.l parser.ypp symbols.cpp symbols.hpp 
 
-#EOF
+#EOFk
