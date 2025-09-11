@@ -76,7 +76,8 @@ extern int yydebug;
     LIT_TRUE = 277,                /* LIT_TRUE  */
     LIT_FLASE = 278,               /* LIT_FLASE  */
     LIT_STRING = 279,              /* LIT_STRING  */
-    TOKEN_ERROR = 280              /* TOKEN_ERROR  */
+    TOKEN_ERROR = 280,             /* TOKEN_ERROR  */
+    UMINUS = 281                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif

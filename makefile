@@ -5,8 +5,8 @@ CXXFLAGS = -std=c++11 -Wall
 target: etapa2
 
 # Regra para criar o executável final
-etapa2: lex.yy.o main.o symbols.o
-	$(CXX) lex.yy.o main.o symbols.o -o etapa2
+etapa2: parser.tab.o lex.yy.o symbols.o
+	$(CXX) parser.tab.o lex.yy.o symbols.o -o etapa2
 
 # Regra genérica para compilar arquivos .cpp em .o
 %.o: %.cpp 
@@ -17,31 +17,26 @@ parser.tab.cpp parser.tab.hpp: parser.ypp
 	bison -d -o parser.tab.cpp parser.ypp
 
 # Regra específica para gerar o scanner a partir do flex
-lex.yy.cpp: scanner.l
+lex.yy.cpp: scanner.l parser.tab.hpp
 	flex -o lex.yy.cpp scanner.l 
 
 # Dependências específicas
-main.o: main.cpp tokens.h symbols.hpp parser.tab.hpp
+parser.tab.o: parser.tab.cpp symbols.hpp
 symbols.o: symbols.cpp symbols.hpp 
-lex.yy.o: lex.yy.cpp tokens.h symbols.hpp parser.tab.hpp
-
+main.o: main.cpp symbols.hpp parser.tab.hpp
+lex.yy.o: lex.yy.cpp parser.tab.hpp symbols.hpp
 
 # Limpeza dos arquivos gerados
 clean:
-	rm -f etapa1 etapa2 lex.yy.cpp *.o parser.tab.cpp parser.tab.hpp
+	rm -f etapa1 etapa2 lex.yy.cpp parser.tab.cpp parser.tab.hpp *.o
 
-# Regra para executar testes (opcional)
-test1: etapa1
-	./etapa1 < test.txt
-
+# Regra para executar testes
 test2: etapa2
-	./etapa2 < sample.txt
+	./etapa2 sample.txt
 	
-pkge1:
-	rm etapa1.tgz
-	tar cvzf etapa1.tgz main.cpp makefile scanner.l tokens.h symbols.cpp symbols.hpp e1teste.txt
+# Empacotamento
 pkge2:
-	rm etapa2.tgz
-	tar cvzf etapa2.tgz main.cpp makefile scanner.l parser.ypp symbols.cpp symbols.hpp 
+	rm -f etapa2.tgz
+	tar cvzf etapa2.tgz makefile scanner.l parser.ypp symbols.cpp symbols.hpp 
 
 #EOF

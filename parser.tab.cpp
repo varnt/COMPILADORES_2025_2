@@ -157,31 +157,32 @@ enum yysymbol_kind_t
   YYSYMBOL_42_ = 42,                       /* '&'  */
   YYSYMBOL_43_ = 43,                       /* '|'  */
   YYSYMBOL_44_ = 44,                       /* '~'  */
-  YYSYMBOL_YYACCEPT = 45,                  /* $accept  */
-  YYSYMBOL_programa = 46,                  /* programa  */
-  YYSYMBOL_lista_declaracoes = 47,         /* lista_declaracoes  */
-  YYSYMBOL_declaracao = 48,                /* declaracao  */
-  YYSYMBOL_declaracao_variavel = 49,       /* declaracao_variavel  */
-  YYSYMBOL_declaracao_funcao = 50,         /* declaracao_funcao  */
-  YYSYMBOL_tipo = 51,                      /* tipo  */
-  YYSYMBOL_lista_literais = 52,            /* lista_literais  */
-  YYSYMBOL_literal = 53,                   /* literal  */
-  YYSYMBOL_parametros = 54,                /* parametros  */
-  YYSYMBOL_parametro = 55,                 /* parametro  */
-  YYSYMBOL_declaracoes_locais = 56,        /* declaracoes_locais  */
-  YYSYMBOL_bloco = 57,                     /* bloco  */
-  YYSYMBOL_lista_comandos = 58,            /* lista_comandos  */
-  YYSYMBOL_comando = 59,                   /* comando  */
-  YYSYMBOL_comando_atribuicao = 60,        /* comando_atribuicao  */
-  YYSYMBOL_comando_controle = 61,          /* comando_controle  */
-  YYSYMBOL_comando_read = 62,              /* comando_read  */
-  YYSYMBOL_comando_print = 63,             /* comando_print  */
-  YYSYMBOL_lista_print = 64,               /* lista_print  */
-  YYSYMBOL_elemento_print = 65,            /* elemento_print  */
-  YYSYMBOL_comando_return = 66,            /* comando_return  */
-  YYSYMBOL_expressao = 67,                 /* expressao  */
-  YYSYMBOL_chamada_funcao = 68,            /* chamada_funcao  */
-  YYSYMBOL_argumentos = 69                 /* argumentos  */
+  YYSYMBOL_UMINUS = 45,                    /* UMINUS  */
+  YYSYMBOL_YYACCEPT = 46,                  /* $accept  */
+  YYSYMBOL_programa = 47,                  /* programa  */
+  YYSYMBOL_lista_declaracoes = 48,         /* lista_declaracoes  */
+  YYSYMBOL_declaracao = 49,                /* declaracao  */
+  YYSYMBOL_declaracao_variavel = 50,       /* declaracao_variavel  */
+  YYSYMBOL_declaracao_funcao = 51,         /* declaracao_funcao  */
+  YYSYMBOL_tipo = 52,                      /* tipo  */
+  YYSYMBOL_lista_literais = 53,            /* lista_literais  */
+  YYSYMBOL_literal = 54,                   /* literal  */
+  YYSYMBOL_parametros = 55,                /* parametros  */
+  YYSYMBOL_parametro = 56,                 /* parametro  */
+  YYSYMBOL_declaracoes_locais = 57,        /* declaracoes_locais  */
+  YYSYMBOL_bloco = 58,                     /* bloco  */
+  YYSYMBOL_lista_comandos = 59,            /* lista_comandos  */
+  YYSYMBOL_comando = 60,                   /* comando  */
+  YYSYMBOL_comando_atribuicao = 61,        /* comando_atribuicao  */
+  YYSYMBOL_comando_controle = 62,          /* comando_controle  */
+  YYSYMBOL_comando_read = 63,              /* comando_read  */
+  YYSYMBOL_comando_print = 64,             /* comando_print  */
+  YYSYMBOL_lista_print = 65,               /* lista_print  */
+  YYSYMBOL_elemento_print = 66,            /* elemento_print  */
+  YYSYMBOL_comando_return = 67,            /* comando_return  */
+  YYSYMBOL_expressao = 68,                 /* expressao  */
+  YYSYMBOL_chamada_funcao = 69,            /* chamada_funcao  */
+  YYSYMBOL_argumentos = 70                 /* argumentos  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -512,7 +513,7 @@ union yyalloc
 #define YYLAST   364
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  45
+#define YYNTOKENS  46
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  25
 /* YYNRULES -- Number of rules.  */
@@ -521,7 +522,7 @@ union yyalloc
 #define YYNSTATES  149
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   280
+#define YYMAXUTOK   281
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -563,21 +564,21 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25
+      25,    45
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
-static const yytype_int16 yyrline[] =
+static const yytype_uint8 yyrline[] =
 {
-       0,    55,    55,    59,    60,    64,    65,    69,    74,    79,
-      87,    92,   100,   101,   102,   103,   107,   108,   112,   117,
-     122,   127,   132,   141,   142,   145,   153,   154,   170,   171,
-     175,   176,   180,   181,   182,   183,   184,   185,   186,   190,
-     191,   195,   196,   197,   198,   202,   206,   210,   211,   215,
-     220,   224,   228,   229,   230,   231,   232,   233,   234,   235,
-     236,   237,   238,   239,   240,   241,   242,   243,   244,   245,
-     246,   247,   251,   252,   256,   257
+       0,    55,    55,    59,    60,    64,    65,    70,    71,    72,
+      76,    77,    81,    82,    83,    84,    88,    89,    93,    94,
+      95,    96,    97,   101,   102,   105,   109,   110,   114,   115,
+     119,   120,   124,   125,   126,   127,   128,   129,   130,   134,
+     135,   139,   140,   141,   142,   146,   150,   154,   155,   159,
+     160,   164,   168,   169,   170,   171,   172,   173,   174,   175,
+     176,   177,   178,   179,   180,   181,   182,   183,   184,   185,
+     186,   187,   191,   192,   196,   197
 };
 #endif
 
@@ -599,13 +600,13 @@ static const char *const yytname[] =
   "OPERATOR_EQ", "OPERATOR_DIF", "TK_IDENTIFIER", "LIT_INT", "LIT_CHAR",
   "LIT_FLOAT", "LIT_TRUE", "LIT_FLASE", "LIT_STRING", "TOKEN_ERROR", "'='",
   "';'", "'['", "']'", "'('", "')'", "','", "'{'", "'}'", "'+'", "'-'",
-  "'*'", "'/'", "'%'", "'<'", "'>'", "'&'", "'|'", "'~'", "$accept",
-  "programa", "lista_declaracoes", "declaracao", "declaracao_variavel",
-  "declaracao_funcao", "tipo", "lista_literais", "literal", "parametros",
-  "parametro", "declaracoes_locais", "bloco", "lista_comandos", "comando",
-  "comando_atribuicao", "comando_controle", "comando_read",
-  "comando_print", "lista_print", "elemento_print", "comando_return",
-  "expressao", "chamada_funcao", "argumentos", YY_NULLPTR
+  "'*'", "'/'", "'%'", "'<'", "'>'", "'&'", "'|'", "'~'", "UMINUS",
+  "$accept", "programa", "lista_declaracoes", "declaracao",
+  "declaracao_variavel", "declaracao_funcao", "tipo", "lista_literais",
+  "literal", "parametros", "parametro", "declaracoes_locais", "bloco",
+  "lista_comandos", "comando", "comando_atribuicao", "comando_controle",
+  "comando_read", "comando_print", "lista_print", "elemento_print",
+  "comando_return", "expressao", "chamada_funcao", "argumentos", YY_NULLPTR
 };
 
 static const char *
@@ -773,34 +774,34 @@ static const yytype_int16 yycheck[] =
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,     4,     5,     6,    46,    47,    48,    49,    50,
-      51,     0,    47,    18,    26,    28,    30,    19,    20,    21,
-      22,    23,    53,    19,    31,    51,    54,    55,    27,    29,
-      49,    51,    56,    18,    31,    32,    26,    27,    56,    18,
-      33,    57,    56,    54,    52,    53,     7,     9,    10,    11,
-      12,    13,    18,    27,    34,    57,    58,    59,    60,    61,
-      62,    63,    66,    57,    27,    52,    30,    59,    30,    18,
-      18,    24,    30,    36,    44,    53,    64,    65,    67,    68,
-      67,    26,    28,    34,    58,    67,    10,    67,    27,    28,
-      30,    67,    67,    67,    27,    64,    14,    15,    16,    17,
+       0,     3,     4,     5,     6,    47,    48,    49,    50,    51,
+      52,     0,    48,    18,    26,    28,    30,    19,    20,    21,
+      22,    23,    54,    19,    31,    52,    55,    56,    27,    29,
+      50,    52,    57,    18,    31,    32,    26,    27,    57,    18,
+      33,    58,    57,    55,    53,    54,     7,     9,    10,    11,
+      12,    13,    18,    27,    34,    58,    59,    60,    61,    62,
+      63,    64,    67,    58,    27,    53,    30,    60,    30,    18,
+      18,    24,    30,    36,    44,    54,    65,    66,    68,    69,
+      68,    26,    28,    34,    59,    68,    10,    68,    27,    28,
+      30,    68,    68,    68,    27,    65,    14,    15,    16,    17,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    27,
-      67,    67,    31,    30,    31,    67,    31,    67,    69,    31,
-      67,    67,    67,    67,    67,    67,    67,    67,    67,    67,
-      67,    67,    67,    27,    29,    59,    67,    59,    29,    32,
-      31,    26,     8,    31,    69,    67,    59,    27,    27
+      68,    68,    31,    30,    31,    68,    31,    68,    70,    31,
+      68,    68,    68,    68,    68,    68,    68,    68,    68,    68,
+      68,    68,    68,    27,    29,    60,    68,    60,    29,    32,
+      31,    26,     8,    31,    70,    68,    60,    27,    27
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    45,    46,    47,    47,    48,    48,    49,    49,    49,
-      50,    50,    51,    51,    51,    51,    52,    52,    53,    53,
-      53,    53,    53,    54,    54,    55,    56,    56,    57,    57,
-      58,    58,    59,    59,    59,    59,    59,    59,    59,    60,
-      60,    61,    61,    61,    61,    62,    63,    64,    64,    65,
-      65,    66,    67,    67,    67,    67,    67,    67,    67,    67,
-      67,    67,    67,    67,    67,    67,    67,    67,    67,    67,
-      67,    67,    68,    68,    69,    69
+       0,    46,    47,    48,    48,    49,    49,    50,    50,    50,
+      51,    51,    52,    52,    52,    52,    53,    53,    54,    54,
+      54,    54,    54,    55,    55,    56,    57,    57,    58,    58,
+      59,    59,    60,    60,    60,    60,    60,    60,    60,    61,
+      61,    62,    62,    62,    62,    63,    64,    65,    65,    66,
+      66,    67,    68,    68,    68,    68,    68,    68,    68,    68,
+      68,    68,    68,    68,    68,    68,    68,    68,    68,    68,
+      68,    68,    69,    69,    70,    70
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -1546,116 +1547,8 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 7: /* declaracao_variavel: tipo TK_IDENTIFIER '=' literal ';'  */
-#line 70 "parser.ypp"
-                    {
-                        // Inserir na tabela de símbolos como variável
-                        insertSymbolTable(yyvsp[-3], SYMBOL_VARIABLE);
-                    }
-#line 1556 "parser.tab.cpp"
-    break;
 
-  case 8: /* declaracao_variavel: tipo TK_IDENTIFIER '[' LIT_INT ']' ';'  */
-#line 75 "parser.ypp"
-                    {
-                        // Inserir na tabela de símbolos como vetor
-                        insertSymbolTable(yyvsp[-4], SYMBOL_VECTOR);
-                    }
-#line 1565 "parser.tab.cpp"
-    break;
-
-  case 9: /* declaracao_variavel: tipo TK_IDENTIFIER '[' LIT_INT ']' '=' lista_literais ';'  */
-#line 80 "parser.ypp"
-                    {
-                        // Inserir na tabela de símbolos como vetor inicializado
-                        insertSymbolTable(yyvsp[-6], SYMBOL_VECTOR);
-                    }
-#line 1574 "parser.tab.cpp"
-    break;
-
-  case 10: /* declaracao_funcao: tipo TK_IDENTIFIER '(' parametros ')' declaracoes_locais bloco  */
-#line 88 "parser.ypp"
-                  {
-                      // Inserir na tabela de símbolos como função
-                      insertSymbolTable(yyvsp[-5], SYMBOL_FUNCTION);
-                  }
-#line 1583 "parser.tab.cpp"
-    break;
-
-  case 11: /* declaracao_funcao: tipo TK_IDENTIFIER '(' ')' declaracoes_locais bloco  */
-#line 93 "parser.ypp"
-                  {
-                      // Função sem parâmetros
-                      insertSymbolTable(yyvsp[-4], SYMBOL_FUNCTION);
-                  }
-#line 1592 "parser.tab.cpp"
-    break;
-
-  case 18: /* literal: LIT_INT  */
-#line 113 "parser.ypp"
-        {
-            // Inserir literal inteiro na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_INT);
-        }
-#line 1601 "parser.tab.cpp"
-    break;
-
-  case 19: /* literal: LIT_CHAR  */
-#line 118 "parser.ypp"
-        {
-            // Inserir literal caractere na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_CHAR);
-        }
-#line 1610 "parser.tab.cpp"
-    break;
-
-  case 20: /* literal: LIT_FLOAT  */
-#line 123 "parser.ypp"
-        {
-            // Inserir literal real na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_FLOAT);
-        }
-#line 1619 "parser.tab.cpp"
-    break;
-
-  case 21: /* literal: LIT_TRUE  */
-#line 128 "parser.ypp"
-        {
-            // Inserir literal booleano true na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_TRUE);
-        }
-#line 1628 "parser.tab.cpp"
-    break;
-
-  case 22: /* literal: LIT_FLASE  */
-#line 133 "parser.ypp"
-        {
-            // Inserir literal booleano false na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_FLASE);
-        }
-#line 1637 "parser.tab.cpp"
-    break;
-
-  case 25: /* parametro: tipo TK_IDENTIFIER  */
-#line 146 "parser.ypp"
-          {
-              // Inserir parâmetro na tabela de símbolos
-              insertSymbolTable(yyvsp[0], SYMBOL_VARIABLE);
-          }
-#line 1646 "parser.tab.cpp"
-    break;
-
-  case 49: /* elemento_print: LIT_STRING  */
-#line 216 "parser.ypp"
-               {
-                   // Inserir string na tabela de símbolos
-                   insertSymbolTable(yytext, SYMBOL_LIT_STRING);
-               }
-#line 1655 "parser.tab.cpp"
-    break;
-
-
-#line 1659 "parser.tab.cpp"
+#line 1552 "parser.tab.cpp"
 
       default: break;
     }
@@ -1879,7 +1772,8 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 260 "parser.ypp"
+#line 200 "parser.ypp"
+
 
 
 // Código suplementar

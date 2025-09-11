@@ -14,12 +14,11 @@ extern int yylineno;                  // Contador de linhas
 void yyerror (char const *mensagem);  // Função de erro
 int getLineNumber();                  // Função para obter o número da linha atual
 %}
-//Definições
-
+// Definições
 %start programa
 %define parse.error verbose 
 
-//Tokens
+// Tokens - palavras reservadas
 %token KW_CHAR
 %token KW_INT  
 %token KW_FLOAT
@@ -32,13 +31,13 @@ int getLineNumber();                  // Função para obter o número da linha 
 %token KW_PRINT
 %token KW_RETURN
 
-//Operadores
+// Operadores compostos
 %token OPERATOR_LE
 %token OPERATOR_GE
 %token OPERATOR_EQ
 %token OPERATOR_DIF
 
-//Identificadores e Literais
+// Identificadores e literais
 %token TK_IDENTIFIER
 %token LIT_INT
 %token LIT_CHAR
@@ -47,6 +46,7 @@ int getLineNumber();                  // Função para obter o número da linha 
 %token LIT_FLASE
 %token LIT_STRING
 %token TOKEN_ERROR
+
 %%
 
 // Regras gramaticais
@@ -66,34 +66,15 @@ declaracao: declaracao_variavel
           ;
 
 // Declaração de variável: tipo identificador = literal ;
+// Também inclui declaração de vetores conforme especificação
 declaracao_variavel: tipo TK_IDENTIFIER '=' literal ';'
-                    {
-                        // Inserir na tabela de símbolos como variável
-                        insertSymbolTable($2, SYMBOL_VARIABLE);
-                    }
                    | tipo TK_IDENTIFIER '[' LIT_INT ']' ';'
-                    {
-                        // Inserir na tabela de símbolos como vetor
-                        insertSymbolTable($2, SYMBOL_VECTOR);
-                    }
                    | tipo TK_IDENTIFIER '[' LIT_INT ']' '=' lista_literais ';'
-                    {
-                        // Inserir na tabela de símbolos como vetor inicializado
-                        insertSymbolTable($2, SYMBOL_VECTOR);
-                    }
                    ;
 
 // Declaração de função: tipo identificador ( parametros ) declaracoes_locais bloco
 declaracao_funcao: tipo TK_IDENTIFIER '(' parametros ')' declaracoes_locais bloco
-                  {
-                      // Inserir na tabela de símbolos como função
-                      insertSymbolTable($2, SYMBOL_FUNCTION);
-                  }
                  | tipo TK_IDENTIFIER '(' ')' declaracoes_locais bloco
-                  {
-                      // Função sem parâmetros
-                      insertSymbolTable($2, SYMBOL_FUNCTION);
-                  }
                  ;
 
 // Tipos da linguagem
@@ -108,64 +89,27 @@ lista_literais: literal lista_literais
               | literal
               ;
 
-// Literais da linguagem do Aluno Victor de Souza Arnt Matricula 00291097 
+// Literais da linguagem - Aluno Victor de Souza Arnt Matricula 00291097 
 literal: LIT_INT
-        {
-            // Inserir literal inteiro na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_INT);
-        }
        | LIT_CHAR
-        {
-            // Inserir literal caractere na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_CHAR);
-        }
        | LIT_FLOAT
-        {
-            // Inserir literal real na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_FLOAT);
-        }
        | LIT_TRUE
-        {
-            // Inserir literal booleano true na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_TRUE);
-        }
        | LIT_FLASE
-        {
-            // Inserir literal booleano false na tabela de símbolos
-            insertSymbolTable(yytext, SYMBOL_LIT_FLASE);
-        }
        ;
 
 // Parâmetros de função
-//Aluno Victor de Souza Arnt Matricula 00291097
 parametros: parametro ',' parametros
           | parametro
           ;
 
 parametro: tipo TK_IDENTIFIER
-          {
-              // Inserir parâmetro na tabela de símbolos
-              insertSymbolTable($2, SYMBOL_VARIABLE);
-          }
          ;
 
 // Declarações de variáveis locais
 declaracoes_locais: declaracao_variavel declaracoes_locais
                   | /* vazio */
                   ;
-//A linguagem inclui também a declaração de vetores, feita pela definição de seu tamanho inteiro positivo entre colchetes, colocada imediatamente à direita do nome. No caso dos vetores, a inicialização é opcional, e quando presente, será dada pela sequência de valores literais separados por espaços, após um símbolo de igual e antes do terminador ponto-e-vírgula. Se não estiver presente, o terminador ponto-e-vírgula segue imediatamente o tamanho do vetor. Vetores também podem ser dos tipos char, int, bool ou float. 
-declaracao_vetores: tipo TK_IDENTIFIER '[' LIT_INT ']' ';'
-                    {
-                        // Inserir na tabela de símbolos como vetor
-                        insertSymbolTable($2, SYMBOL_VECTOR);
-                    }
-                   | tipo TK_IDENTIFIER '[' LIT_INT ']' '=' lista_literais ';'
-                    {
-                        // Inserir na tabela de símbolos como vetor inicializado
-                        insertSymbolTable($2, SYMBOL_VECTOR);
-                    }
-                   ;
-                   
+
 // Bloco de comandos
 bloco: '{' lista_comandos '}'
      | '{' '}'
@@ -186,7 +130,7 @@ comando: comando_atribuicao
        | ';'  // Comando vazio
        ;
 
-// Comando de atribuição do Aluno Victor de Souza Arnt Matricula 00291097 
+// Comando de atribuição - Aluno Victor de Souza Arnt Matricula 00291097 
 comando_atribuicao: TK_IDENTIFIER '=' expressao ';'
                   | TK_IDENTIFIER '[' expressao ']' '=' expressao ';'
                   ;
@@ -213,10 +157,6 @@ lista_print: elemento_print lista_print
 
 // Elemento para print (string ou expressão)
 elemento_print: LIT_STRING
-               {
-                   // Inserir string na tabela de símbolos
-                   insertSymbolTable(yytext, SYMBOL_LIT_STRING);
-               }
               | expressao
               ;
 
@@ -225,27 +165,27 @@ comando_return: KW_RETURN expressao ';'
               ;
 
 // Expressões aritméticas
-expressao: expressao '+' expressao              //exemplo: a + b
-         | expressao '-' expressao              //exemplo: a - b
-         | expressao '*' expressao              //exemplo: a * b
-         | expressao '/' expressao              //exemplo: a / b
-         | expressao '%' expressao              //exemplo: a % b
-         | expressao '<' expressao              //exemplo: a < b
-         | expressao '>' expressao              //exemplo: a > b
-         | expressao OPERATOR_LE expressao      //exemplo: a <= b
-         | expressao OPERATOR_GE expressao      //exemplo: a >= b
-         | expressao OPERATOR_EQ expressao      //exemplo: a == b
-         | expressao OPERATOR_DIF expressao     //exemplo: a != b   
-         | expressao '&' expressao              //exemplo: a && b
-         | expressao '|' expressao              //exemplo: a && b || c
-         | '~' expressao                        //exemplo: !a && b
-         | '-' expressao                        //exemplo: -a + b  no bison menciona sobre %prec UMINUS   fiquei com duvida se era pra colocar ou não
-         | '(' expressao ')'                    //exemplo: (a + b) * c  
-         | TK_IDENTIFIER                        //exemplo: a
-         | TK_IDENTIFIER '[' expressao ']'      //exemplo: a[2 + 3]
-         | chamada_funcao                       //exemplo: funcao(a, b + 2)
-         | literal                              //exemplo: 5, 'a', 3.14, true, false
-         ;                                      //termina com ponto e virgula
+expressao: expressao '+' expressao              // exemplo: a + b
+         | expressao '-' expressao              // exemplo: a - b
+         | expressao '*' expressao              // exemplo: a * b
+         | expressao '/' expressao              // exemplo: a / b
+         | expressao '%' expressao              // exemplo: a % b
+         | expressao '<' expressao              // exemplo: a < b
+         | expressao '>' expressao              // exemplo: a > b
+         | expressao OPERATOR_LE expressao      // exemplo: a <= b
+         | expressao OPERATOR_GE expressao      // exemplo: a >= b
+         | expressao OPERATOR_EQ expressao      // exemplo: a == b
+         | expressao OPERATOR_DIF expressao     // exemplo: a != b   
+         | expressao '&' expressao              // exemplo: a && b
+         | expressao '|' expressao              // exemplo: a || b
+         | '~' expressao                        // exemplo: !a
+         | '-' expressao %prec UMINUS           // exemplo: -a
+         | '(' expressao ')'                    // exemplo: (a + b) * c  
+         | TK_IDENTIFIER                        // exemplo: a
+         | TK_IDENTIFIER '[' expressao ']'      // exemplo: a[2 + 3]
+         | chamada_funcao                       // exemplo: funcao(a, b + 2)
+         | literal                              // exemplo: 5, 'a', 3.14, true, false
+         ;
 
 // Chamada de função
 chamada_funcao: TK_IDENTIFIER '(' argumentos ')'
@@ -258,6 +198,7 @@ argumentos: expressao ',' argumentos
           ;
 
 %%
+
 
 // Código suplementar
 // Aluno Victor de Souza Arnt Matricula 00291097
