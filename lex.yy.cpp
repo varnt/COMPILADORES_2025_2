@@ -510,7 +510,7 @@ char *yytext;
 #line 1 "scanner.l"
 /* Seção 1: Definições */
 #line 3 "scanner.l"
-    // Seção 1.1 Código C++ Aluno Victor de Souza Arnt Matricula 00201097 
+    // Seção 1.1 Código C++ Aluno Victor de Souza Arnt Matricula 00291097 
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -530,7 +530,7 @@ char *yytext;
 
     
 #line 533 "lex.yy.cpp"
-/* Aluno Victor de Souza Arnt Matricula 00201097 */
+/* Aluno Victor de Souza Arnt Matricula 00291097 */
 /* Substituições 1.2 (opcional) */
 /* Exemplo: */
 /* Letras minusculas */
@@ -765,7 +765,7 @@ YY_DECL
 
 #line 52 "scanner.l"
     /* Seção 2: Regras */
-    /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS - Aluno Victor de Souza Arnt Matricula 00201097 */
+    /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS - Aluno Victor de Souza Arnt Matricula 00291097 */
 
 #line 771 "lex.yy.cpp"
 

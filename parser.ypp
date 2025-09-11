@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-//Aluno Victor de Souza Arnt Matricula 00201097
+//Aluno Victor de Souza Arnt Matricula 00291097
 
 int yylex(void);                      //Função de análise léxica
 extern int yylineno;                  //Contador de linhas
@@ -95,7 +95,7 @@ lista_literais: literal lista_literais
               | literal
               ;
 
-// Literais da linguagem
+// Literais da linguagem do Aluno Victor de Souza Arnt Matricula 00291097 
 literal: LIT_INT
         {
             // Inserir literal inteiro na tabela de símbolos
@@ -124,7 +124,7 @@ literal: LIT_INT
        ;
 
 // Parâmetros de função
-//Aluno Victor de Souza Arnt Matricula 00201097
+//Aluno Victor de Souza Arnt Matricula 00291097
 parametros: parametro ',' parametros
           | parametro
           ;
@@ -173,7 +173,7 @@ comando: comando_atribuicao
        | ';'  // Comando vazio
        ;
 
-// Comando de atribuição
+// Comando de atribuição do Aluno Victor de Souza Arnt Matricula 00291097 
 comando_atribuicao: TK_IDENTIFIER '=' expressao ';'
                   | TK_IDENTIFIER '[' expressao ']' '=' expressao ';'
                   ;
@@ -247,7 +247,7 @@ argumentos: expressao ',' argumentos
 %%
 
 // Código suplementar
-// Aluno Victor de Souza Arnt Matricula 00201097
+// Aluno Victor de Souza Arnt Matricula 00291097
 
 void yyerror(char const *mensagem) { 
     fprintf(stderr, "Erro de sintaxe na linha %d\n", yylineno);

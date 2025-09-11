@@ -1,6 +1,6 @@
 /* Seção 1: Definições */
 %{
-    // Seção 1.1 Código C++ Aluno Victor de Souza Arnt Matricula 00201097 
+    // Seção 1.1 Código C++ Aluno Victor de Souza Arnt Matricula 00291097 
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -20,7 +20,7 @@
 
     
 %}
-/* Aluno Victor de Souza Arnt Matricula 00201097 */
+/* Aluno Victor de Souza Arnt Matricula 00291097 */
 /* Substituições 1.2 (opcional) */
 /* Exemplo: */
 digit [0-9]
@@ -49,7 +49,7 @@ literal_string    \"(\\.|[^"\n\\])*\"
 
 %%
     /* Seção 2: Regras */
-    /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS - Aluno Victor de Souza Arnt Matricula 00201097 */
+    /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS - Aluno Victor de Souza Arnt Matricula 00291097 */
 
 "//".*                   { /* Ignora comentários de linha simples única*/ }
 
