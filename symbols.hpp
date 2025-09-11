@@ -47,4 +47,4 @@ extern map<string, SYMBOL> SymbolTable;
 // Protótipos das funções
 SYMBOL* insertSymbolTable(char* name, int type);
 void printSymbolTable();
-
+void SymbolTableInit(); // Função de inicialização da tabela

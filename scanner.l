@@ -76,15 +76,15 @@ literal_string    \"(\\.|[^"\n\\])*\"
 "read"                    {return KW_READ;}
 "print"                   {return KW_PRINT;}
 "return"                  {return KW_RETURN;}
-"true"                    {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_TRUE;}
-"false"                   {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_FLASE;}
+"true"                    {insertSymbolTable(yytext, SYMBOL_LIT_TRUE); return LIT_TRUE;}
+"false"                   {insertSymbolTable(yytext, SYMBOL_LIT_FLASE); return LIT_FLASE;}
 
-{literal_int}               {insertSymbolTable(yytext, SYMBOL_LITERAL_INT); return LIT_INT;} //inteiros com inserção na tabela
-{literal_float}             {insertSymbolTable(yytext, SYMBOL_LITERAL_FLOAT); return LIT_FLOAT;} //reais com inserção na tabela
+{literal_int}               {insertSymbolTable(yytext, SYMBOL_LIT_INT); return LIT_INT;} //inteiros com inserção na tabela
+{literal_float}             {insertSymbolTable(yytext, SYMBOL_LIT_FLOAT); return LIT_FLOAT;} //reais com inserção na tabela
 [,;:()[\]{}=+\-*/%<>&|~]  {return yytext[0];} //retorna o código ASCII do caracter usando yytext[0]
 {identifier}                {insertSymbolTable(yytext, SYMBOL_IDENTIFIER); return TK_IDENTIFIER;} //identificadores com inserção na tabela
-{literal_char}              {insertSymbolTable(yytext, SYMBOL_LITERAL_CHAR); return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
-{literal_string}            {insertSymbolTable(yytext, SYMBOL_LITERAL_STRING); return LIT_STRING;} //strings com inserção na tabela
+{literal_char}              {insertSymbolTable(yytext, SYMBOL_LIT_CHAR); return LIT_CHAR;} //caracteres Reconhecer um único caractere entre aspas simples (por exemplo, 'a', '1', '#'). O caractere pode ser qualquer símbolo ASCII, exceto a aspa simples e o caractere de nova linha.**//
+{literal_string}            {insertSymbolTable(yytext, SYMBOL_LIT_STRING); return LIT_STRING;} //strings com inserção na tabela
 
  
 [ \t]+                    { /* Ignora espaços em branco */ }
@@ -97,10 +97,7 @@ literal_string    \"(\\.|[^"\n\\])*\"
 %%
 /* Seção 3: Sub-rotinas */
 
-// yyerror: Chamada em caso de erro.
-    void yyerror(const char *s) {
-        std::cerr << "Erro léxico na linha " << line_number << ": " << s << " em '" << yytext << "'" << std::endl;
-    }
+
 
     // Funções de controle de estado e número de linha
     int getLineNumber(void) {

@@ -8,7 +8,10 @@ using namespace std;
 map<string, SYMBOL> SymbolTable;
 
 
-
+// Inicializa a tabela de símbolos (limpa se já existir)
+void SymbolTableInit() {
+        SymbolTable.clear();
+}
 
 // Insere um símbolo na tabela de símbolos
 SYMBOL* insertSymbolTable(char* name, int type) {

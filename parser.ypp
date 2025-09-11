@@ -179,7 +179,7 @@ expressao: expressao '+' expressao              // exemplo: a + b
          | expressao '&' expressao              // exemplo: a && b
          | expressao '|' expressao              // exemplo: a || b
          | '~' expressao                        // exemplo: !a
-         | '-' expressao %prec UMINUS           // exemplo: -a
+         | '-' expressao                        // exemplo: -a %prec UMINUS
          | '(' expressao ')'                    // exemplo: (a + b) * c  
          | TK_IDENTIFIER                        // exemplo: a
          | TK_IDENTIFIER '[' expressao ']'      // exemplo: a[2 + 3]
@@ -226,7 +226,8 @@ int main(int argc, char** argv) {
     yyin = arquivo;
     
     // Inicializar a tabela de símbolos
-    insertSymbolTable();
+    SymbolTableInit();
+
     
     // Executar a análise sintática
     int resultado = yyparse();
@@ -237,6 +238,7 @@ int main(int argc, char** argv) {
     // Se chegou até aqui, a análise foi bem-sucedida
     if (resultado == 0) {
         printf("Análise sintática concluída com sucesso!\n");
+        printSymbolTable(); // Imprimir a tabela de símbolos
         exit(0);
     } else {
         exit(3);
