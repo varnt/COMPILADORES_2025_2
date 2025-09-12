@@ -47,7 +47,7 @@ int getLineNumber();                  // Função para obter o número da linha 
 %token LIT_STRING
 %token TOKEN_ERROR
 
-//precedencia listar por linha por ordem cresecente de prioridade left right para predicao
+//precedencia listar por linha por ordem cresecente de prioridade left right para predicao olhar no bison como exemplo 
 %%
 
 // Regras gramaticais
@@ -113,16 +113,14 @@ declaracoes_locais: declaracao_variavel declaracoes_locais
 
 // Bloco de comandos
 bloco: '{' lista_comandos '}'
-     | '{' '}'
      ;
 
 // Lista de comandos
 lista_comandos: comando lista_comandos
-              | comando
               ;
 
 // Comandos da linguagem
-comando: comando_atribuicao
+comando: comando_atribuicao // enxugar codigos com os 
        | comando_controle
        | comando_read
        | comando_print
@@ -140,7 +138,6 @@ comando_atribuicao: TK_IDENTIFIER '=' expressao ';'
 comando_controle: KW_IF '(' expressao ')' comando
                 | KW_IF '(' expressao ')' comando KW_ELSE comando
                 | KW_WHILE '(' expressao ')' comando
-                | KW_DO comando KW_WHILE '(' expressao ')' ';'
                 ;
 
 // Comando read
