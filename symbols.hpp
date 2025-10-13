@@ -1,5 +1,7 @@
 
+#ifndef SYMBOLS_HPP // Add this line
 #define SYMBOLS_HPP
+// Aluno Victor de Souza Arnt Matricula 00291097
 
 #include <string>
 #include <map>
@@ -48,3 +50,4 @@ extern map<string, SYMBOL> SymbolTable;
 SYMBOL* insertSymbolTable(char* name, int type);
 void printSymbolTable();
 void SymbolTableInit(); // Função de inicialização da tabela
+#endif

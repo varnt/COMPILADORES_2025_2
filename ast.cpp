@@ -14,7 +14,7 @@ AST* astCreate(int type, SYMBOL* symbol, AST* c0, AST* c1, AST* c2, AST* c3) {
     node->son[3] = c3;
     return node;
 }
-
+// Função para imprimir a árvore AST de forma indentada
 void astPrint(AST* node, int level) {
     if (!node) return;
     
@@ -27,9 +27,9 @@ void astPrint(AST* node, int level) {
     fprintf(stderr, ")\n");
     
     for (int i = 0; i < 4; i++)
-        astDecompile(node->son[i], level + 1);
+        astPrint(node->son[i], level + 1);
 }
-
+// Função para descompilar a AST de volta para código fonte
 void astDecompile(AST* node, FILE* output) {
     if (!node) return;
     

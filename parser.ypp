@@ -3,51 +3,49 @@
 #include <stdlib.h>
 #include <string.h>
 #include "symbols.hpp"
-
+#include "ast.hpp"
 
 //Aluno Victor de Souza Arnt Matricula 00291097
 
-int yylex(void);                      // Função de análise léxica
-extern char* yytext;                  // Texto do token atual
-extern FILE* yyin;                    // Arquivo de entrada
-extern int yylineno;                  // Contador de linhas
-void yyerror (char const *mensagem);  // Função de erro
-int getLineNumber();                  // Função para obter o número da linha atual
+int yylex(void);
+extern char* yytext;
+extern FILE* yyin;
+extern int yylineno;
+void yyerror (char const *mensagem);
+int getLineNumber();
+
+AST* root = NULL;
 %}
-// Definições
+
+%union {
+    SYMBOL* symbol;
+    AST* ast;
+}
+
 %start programa
 %define parse.error verbose 
 
 // Tokens - palavras reservadas
-%token KW_CHAR
-%token KW_INT  
-%token KW_FLOAT
-%token KW_BOOL
-%token KW_IF
-%token KW_ELSE
-%token KW_DO
-%token KW_WHILE
-%token KW_READ
-%token KW_PRINT
-%token KW_RETURN
+%token KW_CHAR KW_INT KW_FLOAT KW_BOOL
+%token KW_IF KW_ELSE KW_DO KW_WHILE
+%token KW_READ KW_PRINT KW_RETURN
 
 // Operadores compostos
-%token OPERATOR_LE
-%token OPERATOR_GE
-%token OPERATOR_EQ
-%token OPERATOR_DIF
+%token OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
 
 // Identificadores e literais
-%token TK_IDENTIFIER
-%token LIT_INT
-%token LIT_CHAR
-%token LIT_FLOAT
-%token LIT_TRUE
-%token LIT_FLASE
-%token LIT_STRING
+%token<symbol> TK_IDENTIFIER
+%token<symbol> LIT_INT LIT_CHAR LIT_FLOAT LIT_TRUE LIT_FLASE LIT_STRING
 %token TOKEN_ERROR
 
-// Precedência dos operadores conforme indicado pelo professor
+// Tipos não-terminais
+%type<ast> programa lista_declaracoes declaracao declaracao_variavel declaracao_funcao
+%type<ast> tipo lista_literais literal parametros parametro
+%type<ast> declaracoes_locais bloco lista_comandos comando
+%type<ast> comando_atribuicao comando_controle comando_read comando_print comando_return
+%type<ast> expressao chamada_funcao argumentos lista_print elemento_print
+
+// Precedência dos operadores
 %right '='
 %left '|'
 %left '&'
@@ -55,164 +53,150 @@ int getLineNumber();                  // Função para obter o número da linha 
 %left '<' '>' OPERATOR_LE OPERATOR_GE
 %left '+' '-'
 %left '*' '/' '%'
-%right '~' UMINUS  // Operadores unários
-%left '[' ']'      // Acesso a vetores
+%right '~' UMINUS
+%left '[' ']'
 
 %%
 
-// Regras gramaticais
-
-// Programa principal: lista de declarações globais
-programa: lista_declaracoes
+programa: lista_declaracoes { root = $$ = astCreate(AST_PROGRAM, NULL, $1, NULL, NULL, NULL); }
         ;
 
-// Lista de declarações globais (variáveis, vetores ou funções)
-lista_declaracoes: declaracao lista_declaracoes
-                 | declaracao
+lista_declaracoes: declaracao lista_declaracoes { $$ = astCreate(AST_DECL_LIST, NULL, $1, $2, NULL, NULL); }
+                 | declaracao { $$ = $1; }
                  ;
 
-// Declaração pode ser de variável, vetor ou função
-declaracao: declaracao_variavel
-          | declaracao_funcao
+declaracao: declaracao_variavel { $$ = $1; }
+          | declaracao_funcao { $$ = $1; }
           ;
 
-// Declaração de variável: tipo identificador = literal ;
-// Também inclui declaração de vetores conforme especificação
-declaracao_variavel: tipo TK_IDENTIFIER '=' literal ';'
+declaracao_variavel: tipo TK_IDENTIFIER '=' literal ';' 
+                    { $$ = astCreate(AST_VAR_DECL, NULL, $1, astCreate(AST_SYMBOL, $2, NULL, NULL, NULL, NULL), $4, NULL); }
                    | tipo TK_IDENTIFIER '[' LIT_INT ']' ';'
+                    { $$ = astCreate(AST_VEC_DECL, NULL, $1, astCreate(AST_SYMBOL, $2, NULL, NULL, NULL, NULL), astCreate(AST_SYMBOL, $4, NULL, NULL, NULL, NULL), NULL); }
                    | tipo TK_IDENTIFIER '[' LIT_INT ']' '=' lista_literais ';'
+                    { $$ = astCreate(AST_VEC_DECL_INIT, NULL, $1, astCreate(AST_SYMBOL, $2, NULL, NULL, NULL, NULL), astCreate(AST_SYMBOL, $4, NULL, NULL, NULL, NULL), $7); }
                    ;
 
-// Declaração de função: tipo identificador ( parametros ) declaracoes_locais bloco
 declaracao_funcao: tipo TK_IDENTIFIER '(' parametros ')' declaracoes_locais bloco
+                  { $$ = astCreate(AST_FUNC_DECL, NULL, $1, astCreate(AST_SYMBOL, $2, NULL, NULL, NULL, NULL), $4, $7); }
                  | tipo TK_IDENTIFIER '(' ')' declaracoes_locais bloco
+                  { $$ = astCreate(AST_FUNC_DECL, NULL, $1, astCreate(AST_SYMBOL, $2, NULL, NULL, NULL, NULL), NULL, $6); }
                  ;
 
-// Tipos da linguagem
-tipo: KW_CHAR
-    | KW_INT
-    | KW_FLOAT
-    | KW_BOOL
+tipo: KW_CHAR { $$ = astCreate(AST_SYMBOL, insertSymbolTable((char*)"char", SYMBOL_CHAR), NULL, NULL, NULL, NULL); }
+    | KW_INT { $$ = astCreate(AST_SYMBOL, insertSymbolTable((char*)"int", SYMBOL_INT), NULL, NULL, NULL, NULL); }
+    | KW_FLOAT { $$ = astCreate(AST_SYMBOL, insertSymbolTable((char*)"float", SYMBOL_FLOAT), NULL, NULL, NULL, NULL); }
+    | KW_BOOL { $$ = astCreate(AST_SYMBOL, insertSymbolTable((char*)"bool", SYMBOL_BOOL), NULL, NULL, NULL, NULL); }
     ;
 
-// Lista de literais para inicialização de vetores
-lista_literais: literal lista_literais
-              | literal
+lista_literais: literal lista_literais { $$ = astCreate(AST_LIT_LIST, NULL, $1, $2, NULL, NULL); }
+              | literal { $$ = $1; }
               ;
 
-// Literais da linguagem - Aluno Victor de Souza Arnt Matricula 00291097 
-literal: LIT_INT
-       | LIT_CHAR
-       | LIT_FLOAT
-       | LIT_TRUE
-       | LIT_FLASE
+literal: LIT_INT { $$ = astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL); }
+       | LIT_CHAR { $$ = astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL); }
+       | LIT_FLOAT { $$ = astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL); }
+       | LIT_TRUE { $$ = astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL); }
+       | LIT_FLASE { $$ = astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL); }
        ;
 
-// Parâmetros de função
-parametros: parametro ',' parametros
-          | parametro
+parametros: parametro ',' parametros { $$ = astCreate(AST_PARAM_LIST, NULL, $1, $3, NULL, NULL); }
+          | parametro { $$ = $1; }
           ;
 
-parametro: tipo TK_IDENTIFIER
+parametro: tipo TK_IDENTIFIER { $$ = astCreate(AST_PARAM, NULL, $1, astCreate(AST_SYMBOL, $2, NULL, NULL, NULL, NULL), NULL, NULL); }
          ;
 
-// Declarações de variáveis locais
-declaracoes_locais: declaracao_variavel declaracoes_locais
-                  | /* vazio */
+declaracoes_locais: declaracao_variavel declaracoes_locais { $$ = astCreate(AST_DECL_LIST, NULL, $1, $2, NULL, NULL); }
+                  | /* vazio */ { $$ = NULL; }
                   ;
 
-// Bloco de comandos
-bloco: '{' lista_comandos '}'
-     | '{' '}'
+bloco: '{' lista_comandos '}' { $$ = astCreate(AST_BLOCK, NULL, $2, NULL, NULL, NULL); }
+     | '{' '}' { $$ = astCreate(AST_BLOCK, NULL, NULL, NULL, NULL, NULL); }
      ;
 
-// Lista de comandos
-lista_comandos: comando lista_comandos
-              | comando
+lista_comandos: comando lista_comandos { $$ = astCreate(AST_CMD_LIST, NULL, $1, $2, NULL, NULL); }
+              | comando { $$ = $1; }
               ;
 
-// Comandos da linguagem
-comando: comando_atribuicao
-       | comando_controle
-       | comando_read
-       | comando_print
-       | comando_return
-       | bloco
-       | ';'  // Comando vazio
+comando: comando_atribuicao { $$ = $1; }
+       | comando_controle { $$ = $1; }
+       | comando_read { $$ = $1; }
+       | comando_print { $$ = $1; }
+       | comando_return { $$ = $1; }
+       | bloco { $$ = $1; }
+       | ';' { $$ = NULL; }
        ;
 
-// Comando de atribuição - Aluno Victor de Souza Arnt Matricula 00291097 
 comando_atribuicao: TK_IDENTIFIER '=' expressao ';'
+                   { $$ = astCreate(AST_ASSIGN, NULL, astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL), $3, NULL, NULL); }
                   | TK_IDENTIFIER '[' expressao ']' '=' expressao ';'
+                   { $$ = astCreate(AST_ASSIGN_VEC, NULL, astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL), $3, $6, NULL); }
                   ;
 
-// Comandos de controle de fluxo
 comando_controle: KW_IF '(' expressao ')' comando
+                 { $$ = astCreate(AST_IF, NULL, $3, $5, NULL, NULL); }
                 | KW_IF '(' expressao ')' comando KW_ELSE comando
+                 { $$ = astCreate(AST_IF_ELSE, NULL, $3, $5, $7, NULL); }
                 | KW_WHILE '(' expressao ')' comando
+                 { $$ = astCreate(AST_WHILE, NULL, $3, $5, NULL, NULL); }
                 | KW_DO comando KW_WHILE '(' expressao ')' ';'
+                 { $$ = astCreate(AST_DO_WHILE, NULL, $2, $5, NULL, NULL); }
                 ;
 
-// Comando read
 comando_read: KW_READ TK_IDENTIFIER ';'
+             { $$ = astCreate(AST_READ, NULL, astCreate(AST_SYMBOL, $2, NULL, NULL, NULL, NULL), NULL, NULL, NULL); }
             ;
 
-// Comando print
 comando_print: KW_PRINT lista_print ';'
+              { $$ = astCreate(AST_PRINT, NULL, $2, NULL, NULL, NULL); }
              ;
 
-// Lista de elementos para print
-lista_print: elemento_print lista_print
-           | elemento_print
+lista_print: elemento_print lista_print { $$ = astCreate(AST_PRINT_LIST, NULL, $1, $2, NULL, NULL); }
+           | elemento_print { $$ = $1; }
            ;
 
-// Elemento para print (string ou expressão)
-elemento_print: LIT_STRING
-              | expressao
+elemento_print: LIT_STRING { $$ = astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL); }
+              | expressao { $$ = $1; }
               ;
 
-// Comando return
 comando_return: KW_RETURN expressao ';'
+               { $$ = astCreate(AST_RETURN, NULL, $2, NULL, NULL, NULL); }
               ;
 
-// Expressões aritméticas
-expressao: expressao '+' expressao              // exemplo: a + b
-         | expressao '-' expressao              // exemplo: a - b
-         | expressao '*' expressao              // exemplo: a * b
-         | expressao '/' expressao              // exemplo: a / b
-         | expressao '%' expressao              // exemplo: a % b
-         | expressao '<' expressao              // exemplo: a < b
-         | expressao '>' expressao              // exemplo: a > b
-         | expressao OPERATOR_LE expressao      // exemplo: a <= b
-         | expressao OPERATOR_GE expressao      // exemplo: a >= b
-         | expressao OPERATOR_EQ expressao      // exemplo: a == b
-         | expressao OPERATOR_DIF expressao     // exemplo: a != b   
-         | expressao '&' expressao              // exemplo: a && b
-         | expressao '|' expressao              // exemplo: a || b
-         | '~' expressao                        // exemplo: !a
-         | '-' expressao                        // exemplo: -a %prec UMINUS
-         | '(' expressao ')'                    // exemplo: (a + b) * c  
-         | TK_IDENTIFIER                        // exemplo: a
-         | TK_IDENTIFIER '[' expressao ']'      // exemplo: a[2 + 3]
-         | chamada_funcao                       // exemplo: funcao(a, b + 2)
-         | literal                              // exemplo: 5, 'a', 3.14, true, false
+expressao: expressao '+' expressao { $$ = astCreate(AST_ADD, NULL, $1, $3, NULL, NULL); }
+         | expressao '-' expressao { $$ = astCreate(AST_SUB, NULL, $1, $3, NULL, NULL); }
+         | expressao '*' expressao { $$ = astCreate(AST_MUL, NULL, $1, $3, NULL, NULL); }
+         | expressao '/' expressao { $$ = astCreate(AST_DIV, NULL, $1, $3, NULL, NULL); }
+         | expressao '%' expressao { $$ = astCreate(AST_MOD, NULL, $1, $3, NULL, NULL); }
+         | expressao '<' expressao { $$ = astCreate(AST_LT, NULL, $1, $3, NULL, NULL); }
+         | expressao '>' expressao { $$ = astCreate(AST_GT, NULL, $1, $3, NULL, NULL); }
+         | expressao OPERATOR_LE expressao { $$ = astCreate(AST_LE, NULL, $1, $3, NULL, NULL); }
+         | expressao OPERATOR_GE expressao { $$ = astCreate(AST_GE, NULL, $1, $3, NULL, NULL); }
+         | expressao OPERATOR_EQ expressao { $$ = astCreate(AST_EQ, NULL, $1, $3, NULL, NULL); }
+         | expressao OPERATOR_DIF expressao { $$ = astCreate(AST_DIF, NULL, $1, $3, NULL, NULL); }
+         | expressao '&' expressao { $$ = astCreate(AST_AND, NULL, $1, $3, NULL, NULL); }
+         | expressao '|' expressao { $$ = astCreate(AST_OR, NULL, $1, $3, NULL, NULL); }
+         | '~' expressao { $$ = astCreate(AST_NOT, NULL, $2, NULL, NULL, NULL); }
+         | '-' expressao %prec UMINUS { $$ = astCreate(AST_NEG, NULL, $2, NULL, NULL, NULL); }
+         | '(' expressao ')' { $$ = $2; }
+         | TK_IDENTIFIER { $$ = astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL); }
+         | TK_IDENTIFIER '[' expressao ']' { $$ = astCreate(AST_VEC_ACCESS, NULL, astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL), $3, NULL, NULL); }
+         | chamada_funcao { $$ = $1; }
+         | literal { $$ = $1; }
          ;
 
-// Chamada de função
 chamada_funcao: TK_IDENTIFIER '(' argumentos ')'
+               { $$ = astCreate(AST_FUNC_CALL, NULL, astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL), $3, NULL, NULL); }
               | TK_IDENTIFIER '(' ')'
+               { $$ = astCreate(AST_FUNC_CALL, NULL, astCreate(AST_SYMBOL, $1, NULL, NULL, NULL, NULL), NULL, NULL, NULL); }
               ;
 
-// Argumentos de função
-argumentos: expressao ',' argumentos
-          | expressao
+argumentos: expressao ',' argumentos { $$ = astCreate(AST_ARG_LIST, NULL, $1, $3, NULL, NULL); }
+          | expressao { $$ = $1; }
           ;
 
 %%
-
-
-// Código suplementar
-// Aluno Victor de Souza Arnt Matricula 00291097
 
 void yyerror(char const *mensagem) { 
     fprintf(stderr, "Erro de sintaxe na linha %d\n", yylineno);
@@ -220,36 +204,35 @@ void yyerror(char const *mensagem) {
 }
 
 int main(int argc, char** argv) {
-    // Verificar se foi passado um arquivo como parâmetro
-    if (argc != 2) {
-        fprintf(stderr, "Uso: %s <arquivo>\n", argv[0]);
+    if (argc != 3) {
+        fprintf(stderr, "Uso: %s <arquivo_entrada> <arquivo_saida>\n", argv[0]);
         exit(1);
     }
     
-    // Abrir o arquivo de entrada
     FILE* arquivo = fopen(argv[1], "r");
     if (!arquivo) {
         fprintf(stderr, "Erro ao abrir o arquivo %s\n", argv[1]);
         exit(2);
     }
     
-    // Definir o arquivo de entrada para o scanner
     yyin = arquivo;
-    
-    // Inicializar a tabela de símbolos
     SymbolTableInit();
-
     
-    // Executar a análise sintática
     int resultado = yyparse();
-    
-    // Fechar o arquivo
     fclose(arquivo);
     
-    // Se chegou até aqui, a análise foi bem-sucedida
     if (resultado == 0) {
         printf("Análise sintática concluída com sucesso!\n");
-        printSymbolTable(); // Imprimir a tabela de símbolos
+        
+        FILE* output = fopen(argv[2], "w");
+        if (!output) {
+            fprintf(stderr, "Erro ao criar arquivo de saída %s\n", argv[2]);
+            exit(2);
+        }
+        
+        astDecompile(root, output);
+        fclose(output);
+        
         exit(0);
     } else {
         exit(3);

@@ -32,7 +32,7 @@ clean:
 
 # Regra para executar testes
 test3: etapa3
-	./etapa3 sample.txt eq1.txt
+	./etapa3 e3teste.txt eq1.txt
 	./etapa3 eq1.txt eq2.txt
 	diff eq1.txt eq2.txt
 

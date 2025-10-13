@@ -19,10 +19,10 @@
 #define AST_AND 12
 #define AST_OR 13
 #define AST_NOT 14
-#define AST_UMINUS 15
+#define AST_NEG 15 
 #define AST_ASSIGN 16
-#define AST_ARRAY_ACCESS 17
-#define AST_ARRAY_ASSIGN 18
+#define AST_VEC_ACCESS 17
+#define AST_ASSIGN_VEC 18 
 #define AST_FUNC_CALL 19
 #define AST_IF 20
 #define AST_IF_ELSE 21
@@ -34,12 +34,19 @@
 #define AST_BLOCK 27
 #define AST_LIST 28
 #define AST_VAR_DECL 29
-#define AST_ARRAY_DECL 30
-#define AST_ARRAY_INIT 31
+#define AST_VEC_DECL 30  
+#define AST_VEC_DECL_INIT 31
 #define AST_FUNC_DECL 32
 #define AST_PARAM 33
 #define AST_ARG 34
 #define AST_PRINT_ELEM 35
+#define AST_PROGRAM 36
+#define AST_DECL_LIST 37
+#define AST_LIT_LIST 38
+#define AST_PARAM_LIST 39
+#define AST_CMD_LIST 40
+#define AST_PRINT_LIST 41
+#define AST_ARG_LIST 42
 
 #include "symbols.hpp"
 

@@ -1,0 +1,46 @@
+// Programa de exemplo para teste da etapa 3
+// Aluno Victor de Souza Arnt Matricula 00291097
+
+int x = 10;
+float y = 3.14;
+char c = 'a';
+bool flag = true;
+
+int vetor[5];
+int matriz[10] = 1 2 3 4 5 6 7 8 9 10;
+
+int soma(int a, int b) {
+    int resultado = 0;
+    resultado = a + b;
+    return resultado;
+}
+
+int main() {
+    int i = 0;
+    float resultado = 0.0;
+    
+    if (x > 5) {
+        print "x eh maior que 5\n";
+    } else {
+        print "x eh menor ou igual a 5\n";
+    }
+    
+    i = 0;
+    while (i < 10) {
+        vetor[i] = i * 2;
+        i = i + 1;
+    }
+    
+    do {
+        print "Loop do-while\n";
+        i = i - 1;
+    } while (i > 0);
+    
+    read x;
+    print "Valor lido: " x "\n";
+    
+    resultado = soma(x, y);
+    print "Resultado da soma: " resultado "\n";
+    
+    return 0;
+}
