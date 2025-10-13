@@ -163,8 +163,27 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_END_OF_FILE 1
 #define EOB_ACT_LAST_MATCH 2
     
-    #define YY_LESS_LINENO(n)
-    #define YY_LINENO_REWIND_TO(ptr)
+    /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
+     *       access to the local variable yy_act. Since yyless() is a macro, it would break
+     *       existing scanners that call yyless() from OUTSIDE yylex.
+     *       One obvious solution it to make yy_act a global. I tried that, and saw
+     *       a 5% performance hit in a non-yylineno scanner, because yy_act is
+     *       normally declared as a register variable-- so it is not worth it.
+     */
+    #define  YY_LESS_LINENO(n) \
+            do { \
+                int yyl;\
+                for ( yyl = n; yyl < yyleng; ++yyl )\
+                    if ( yytext[yyl] == '\n' )\
+                        --yylineno;\
+            }while(0)
+    #define YY_LINENO_REWIND_TO(dst) \
+            do {\
+                const char *p;\
+                for ( p = yy_cp-1; p >= (dst); --p)\
+                    if ( *p == '\n' )\
+                        --yylineno;\
+            }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -493,6 +512,12 @@ static const flex_int16_t yy_chk[160] =
        95,   95,   95,   95,   95,   95,   95,   95,   95
     } ;
 
+/* Table of booleans, true if rule could match eol. */
+static const flex_int32_t yy_rule_can_match_eol[33] =
+    {   0,
+0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,     };
+
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
@@ -515,7 +540,6 @@ char *yytext;
     #include <stdlib.h>
     #include <string.h>
     #include <iostream>
-    //#include "tokens.h" //removido conforme etapa2
     #include "parser.tab.hpp" //arquivo gerado com bison -d parser.ypp
     #include "ast.hpp"
     #include "symbols.hpp"
@@ -530,7 +554,7 @@ char *yytext;
     int isRunning(void);
 
     
-#line 534 "lex.yy.cpp"
+#line 558 "lex.yy.cpp"
 /* Aluno Victor de Souza Arnt Matricula 00291097 */
 /* Substituições 1.2 (opcional) */
 /* Exemplo: */
@@ -543,7 +567,7 @@ char *yytext;
 /* Caracteres entre aspas simples com suporte a escape */
 /* Cadeia de caracteres entre aspas duplas */
 
-#line 547 "lex.yy.cpp"
+#line 571 "lex.yy.cpp"
 
 #define INITIAL 0
 #define STRING 1
@@ -768,7 +792,7 @@ YY_DECL
     /* Seção 2: Regras */
     /* LEMBRA QUE O LEX FLEX PRIORIZA TAMANHO DAS REGRAS - Aluno Victor de Souza Arnt Matricula 00291097 */
 
-#line 772 "lex.yy.cpp"
+#line 796 "lex.yy.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -814,6 +838,16 @@ yy_find_action:
 
 		YY_DO_BEFORE_ACTION;
 
+		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
+			{
+			int yyl;
+			for ( yyl = 0; yyl < yyleng; ++yyl )
+				if ( yytext[yyl] == '\n' )
+					
+    yylineno++;
+;
+			}
+
 do_action:	/* This label is used only to access EOF actions. */
 
 		switch ( yy_act )
@@ -844,7 +878,7 @@ case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 60 "scanner.l"
-{ ++line_number;}
+{ /* yylineno++ inves de line_number*/ }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
@@ -977,7 +1011,7 @@ case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
 #line 93 "scanner.l"
-{++line_number;} 
+{/* yylineno++ inves de line_number*/} 
 	YY_BREAK
 /* Regra especial para fim de arquivo */
 case YY_STATE_EOF(INITIAL):
@@ -996,7 +1030,7 @@ YY_RULE_SETUP
 #line 99 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1000 "lex.yy.cpp"
+#line 1034 "lex.yy.cpp"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1362,6 +1396,10 @@ static int yy_get_next_buffer (void)
 
 	*--yy_cp = (char) c;
 
+    if ( c == '\n' ){
+        --yylineno;
+    }
+
 	(yytext_ptr) = yy_bp;
 	(yy_hold_char) = *yy_cp;
 	(yy_c_buf_p) = yy_cp;
@@ -1438,6 +1476,11 @@ static int yy_get_next_buffer (void)
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
 	*(yy_c_buf_p) = '\0';	/* preserve yytext */
 	(yy_hold_char) = *++(yy_c_buf_p);
+
+	if ( c == '\n' )
+		
+    yylineno++;
+;
 
 	return c;
 }
@@ -1905,6 +1948,9 @@ static int yy_init_globals (void)
      * This function is called from yylex_destroy(), so don't allocate here.
      */
 
+    /* We do not touch yylineno unless the option is enabled. */
+    yylineno =  1;
+    
     (yy_buffer_stack) = NULL;
     (yy_buffer_stack_top) = 0;
     (yy_buffer_stack_max) = 0;
@@ -2007,7 +2053,7 @@ void yyfree (void * ptr )
 
     // Funções de controle de estado e número de linha
     int getLineNumber(void) {
-        return line_number;
+        return yylineno;
     }
     int isRunning(void) {
         return is_running ? 1 : 0; 

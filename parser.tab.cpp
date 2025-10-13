@@ -573,14 +573,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    61,    61,    64,    65,    68,    69,    72,    74,    76,
-      80,    82,    86,    87,    88,    89,    92,    93,    96,    97,
-      98,    99,   100,   103,   104,   107,   110,   111,   114,   115,
-     118,   119,   122,   123,   124,   125,   126,   127,   128,   131,
-     133,   137,   139,   141,   143,   147,   151,   155,   156,   159,
-     160,   163,   167,   168,   169,   170,   171,   172,   173,   174,
-     175,   176,   177,   178,   179,   180,   181,   182,   183,   184,
-     185,   186,   189,   191,   195,   196
+       0,    66,    66,    69,    70,    73,    74,    77,    79,    81,
+      85,    87,    91,    92,    93,    94,    97,    98,   101,   102,
+     103,   104,   105,   108,   109,   112,   115,   116,   119,   120,
+     123,   124,   127,   128,   129,   130,   131,   132,   133,   136,
+     138,   142,   144,   146,   148,   152,   156,   160,   161,   164,
+     165,   168,   172,   173,   174,   175,   176,   177,   178,   179,
+     180,   181,   182,   183,   184,   185,   186,   187,   188,   189,
+     190,   191,   194,   196,   200,   201
 };
 #endif
 
@@ -1564,445 +1564,445 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* programa: lista_declaracoes  */
-#line 61 "parser.ypp"
+#line 66 "parser.ypp"
                             { root = (yyval.ast) = astCreate(AST_PROGRAM, NULL, (yyvsp[0].ast), NULL, NULL, NULL); }
 #line 1570 "parser.tab.cpp"
     break;
 
   case 3: /* lista_declaracoes: declaracao lista_declaracoes  */
-#line 64 "parser.ypp"
+#line 69 "parser.ypp"
                                                 { (yyval.ast) = astCreate(AST_DECL_LIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1576 "parser.tab.cpp"
     break;
 
   case 4: /* lista_declaracoes: declaracao  */
-#line 65 "parser.ypp"
+#line 70 "parser.ypp"
                               { (yyval.ast) = (yyvsp[0].ast); }
 #line 1582 "parser.tab.cpp"
     break;
 
   case 5: /* declaracao: declaracao_variavel  */
-#line 68 "parser.ypp"
+#line 73 "parser.ypp"
                                 { (yyval.ast) = (yyvsp[0].ast); }
 #line 1588 "parser.tab.cpp"
     break;
 
   case 6: /* declaracao: declaracao_funcao  */
-#line 69 "parser.ypp"
+#line 74 "parser.ypp"
                               { (yyval.ast) = (yyvsp[0].ast); }
 #line 1594 "parser.tab.cpp"
     break;
 
   case 7: /* declaracao_variavel: tipo TK_IDENTIFIER '=' literal ';'  */
-#line 73 "parser.ypp"
+#line 78 "parser.ypp"
                     { (yyval.ast) = astCreate(AST_VAR_DECL, NULL, (yyvsp[-4].ast), astCreate(AST_SYMBOL, (yyvsp[-3].symbol), NULL, NULL, NULL, NULL), (yyvsp[-1].ast), NULL); }
 #line 1600 "parser.tab.cpp"
     break;
 
   case 8: /* declaracao_variavel: tipo TK_IDENTIFIER '[' LIT_INT ']' ';'  */
-#line 75 "parser.ypp"
+#line 80 "parser.ypp"
                     { (yyval.ast) = astCreate(AST_VEC_DECL, NULL, (yyvsp[-5].ast), astCreate(AST_SYMBOL, (yyvsp[-4].symbol), NULL, NULL, NULL, NULL), astCreate(AST_SYMBOL, (yyvsp[-2].symbol), NULL, NULL, NULL, NULL), NULL); }
 #line 1606 "parser.tab.cpp"
     break;
 
   case 9: /* declaracao_variavel: tipo TK_IDENTIFIER '[' LIT_INT ']' '=' lista_literais ';'  */
-#line 77 "parser.ypp"
+#line 82 "parser.ypp"
                     { (yyval.ast) = astCreate(AST_VEC_DECL_INIT, NULL, (yyvsp[-7].ast), astCreate(AST_SYMBOL, (yyvsp[-6].symbol), NULL, NULL, NULL, NULL), astCreate(AST_SYMBOL, (yyvsp[-4].symbol), NULL, NULL, NULL, NULL), (yyvsp[-1].ast)); }
 #line 1612 "parser.tab.cpp"
     break;
 
   case 10: /* declaracao_funcao: tipo TK_IDENTIFIER '(' parametros ')' declaracoes_locais bloco  */
-#line 81 "parser.ypp"
+#line 86 "parser.ypp"
                   { (yyval.ast) = astCreate(AST_FUNC_DECL, NULL, (yyvsp[-6].ast), astCreate(AST_SYMBOL, (yyvsp[-5].symbol), NULL, NULL, NULL, NULL), (yyvsp[-3].ast), (yyvsp[0].ast)); }
 #line 1618 "parser.tab.cpp"
     break;
 
   case 11: /* declaracao_funcao: tipo TK_IDENTIFIER '(' ')' declaracoes_locais bloco  */
-#line 83 "parser.ypp"
+#line 88 "parser.ypp"
                   { (yyval.ast) = astCreate(AST_FUNC_DECL, NULL, (yyvsp[-5].ast), astCreate(AST_SYMBOL, (yyvsp[-4].symbol), NULL, NULL, NULL, NULL), NULL, (yyvsp[0].ast)); }
 #line 1624 "parser.tab.cpp"
     break;
 
   case 12: /* tipo: KW_CHAR  */
-#line 86 "parser.ypp"
+#line 91 "parser.ypp"
               { (yyval.ast) = astCreate(AST_SYMBOL, insertSymbolTable((char*)"char", SYMBOL_CHAR), NULL, NULL, NULL, NULL); }
 #line 1630 "parser.tab.cpp"
     break;
 
   case 13: /* tipo: KW_INT  */
-#line 87 "parser.ypp"
+#line 92 "parser.ypp"
              { (yyval.ast) = astCreate(AST_SYMBOL, insertSymbolTable((char*)"int", SYMBOL_INT), NULL, NULL, NULL, NULL); }
 #line 1636 "parser.tab.cpp"
     break;
 
   case 14: /* tipo: KW_FLOAT  */
-#line 88 "parser.ypp"
+#line 93 "parser.ypp"
                { (yyval.ast) = astCreate(AST_SYMBOL, insertSymbolTable((char*)"float", SYMBOL_FLOAT), NULL, NULL, NULL, NULL); }
 #line 1642 "parser.tab.cpp"
     break;
 
   case 15: /* tipo: KW_BOOL  */
-#line 89 "parser.ypp"
+#line 94 "parser.ypp"
               { (yyval.ast) = astCreate(AST_SYMBOL, insertSymbolTable((char*)"bool", SYMBOL_BOOL), NULL, NULL, NULL, NULL); }
 #line 1648 "parser.tab.cpp"
     break;
 
   case 16: /* lista_literais: literal lista_literais  */
-#line 92 "parser.ypp"
+#line 97 "parser.ypp"
                                        { (yyval.ast) = astCreate(AST_LIT_LIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1654 "parser.tab.cpp"
     break;
 
   case 17: /* lista_literais: literal  */
-#line 93 "parser.ypp"
+#line 98 "parser.ypp"
                         { (yyval.ast) = (yyvsp[0].ast); }
 #line 1660 "parser.tab.cpp"
     break;
 
   case 18: /* literal: LIT_INT  */
-#line 96 "parser.ypp"
+#line 101 "parser.ypp"
                  { (yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL); }
 #line 1666 "parser.tab.cpp"
     break;
 
   case 19: /* literal: LIT_CHAR  */
-#line 97 "parser.ypp"
+#line 102 "parser.ypp"
                   { (yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL); }
 #line 1672 "parser.tab.cpp"
     break;
 
   case 20: /* literal: LIT_FLOAT  */
-#line 98 "parser.ypp"
+#line 103 "parser.ypp"
                    { (yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL); }
 #line 1678 "parser.tab.cpp"
     break;
 
   case 21: /* literal: LIT_TRUE  */
-#line 99 "parser.ypp"
+#line 104 "parser.ypp"
                   { (yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL); }
 #line 1684 "parser.tab.cpp"
     break;
 
   case 22: /* literal: LIT_FLASE  */
-#line 100 "parser.ypp"
+#line 105 "parser.ypp"
                    { (yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL); }
 #line 1690 "parser.tab.cpp"
     break;
 
   case 23: /* parametros: parametro ',' parametros  */
-#line 103 "parser.ypp"
+#line 108 "parser.ypp"
                                      { (yyval.ast) = astCreate(AST_PARAM_LIST, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1696 "parser.tab.cpp"
     break;
 
   case 24: /* parametros: parametro  */
-#line 104 "parser.ypp"
+#line 109 "parser.ypp"
                       { (yyval.ast) = (yyvsp[0].ast); }
 #line 1702 "parser.tab.cpp"
     break;
 
   case 25: /* parametro: tipo TK_IDENTIFIER  */
-#line 107 "parser.ypp"
+#line 112 "parser.ypp"
                               { (yyval.ast) = astCreate(AST_PARAM, NULL, (yyvsp[-1].ast), astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL), NULL, NULL); }
 #line 1708 "parser.tab.cpp"
     break;
 
   case 26: /* declaracoes_locais: declaracao_variavel declaracoes_locais  */
-#line 110 "parser.ypp"
+#line 115 "parser.ypp"
                                                            { (yyval.ast) = astCreate(AST_DECL_LIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1714 "parser.tab.cpp"
     break;
 
   case 27: /* declaracoes_locais: %empty  */
-#line 111 "parser.ypp"
+#line 116 "parser.ypp"
                                 { (yyval.ast) = NULL; }
 #line 1720 "parser.tab.cpp"
     break;
 
   case 28: /* bloco: '{' lista_comandos '}'  */
-#line 114 "parser.ypp"
+#line 119 "parser.ypp"
                               { (yyval.ast) = astCreate(AST_BLOCK, NULL, (yyvsp[-1].ast), NULL, NULL, NULL); }
 #line 1726 "parser.tab.cpp"
     break;
 
   case 29: /* bloco: '{' '}'  */
-#line 115 "parser.ypp"
+#line 120 "parser.ypp"
                { (yyval.ast) = astCreate(AST_BLOCK, NULL, NULL, NULL, NULL, NULL); }
 #line 1732 "parser.tab.cpp"
     break;
 
   case 30: /* lista_comandos: comando lista_comandos  */
-#line 118 "parser.ypp"
+#line 123 "parser.ypp"
                                        { (yyval.ast) = astCreate(AST_CMD_LIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1738 "parser.tab.cpp"
     break;
 
   case 31: /* lista_comandos: comando  */
-#line 119 "parser.ypp"
+#line 124 "parser.ypp"
                         { (yyval.ast) = (yyvsp[0].ast); }
 #line 1744 "parser.tab.cpp"
     break;
 
   case 32: /* comando: comando_atribuicao  */
-#line 122 "parser.ypp"
+#line 127 "parser.ypp"
                             { (yyval.ast) = (yyvsp[0].ast); }
 #line 1750 "parser.tab.cpp"
     break;
 
   case 33: /* comando: comando_controle  */
-#line 123 "parser.ypp"
+#line 128 "parser.ypp"
                           { (yyval.ast) = (yyvsp[0].ast); }
 #line 1756 "parser.tab.cpp"
     break;
 
   case 34: /* comando: comando_read  */
-#line 124 "parser.ypp"
+#line 129 "parser.ypp"
                       { (yyval.ast) = (yyvsp[0].ast); }
 #line 1762 "parser.tab.cpp"
     break;
 
   case 35: /* comando: comando_print  */
-#line 125 "parser.ypp"
+#line 130 "parser.ypp"
                        { (yyval.ast) = (yyvsp[0].ast); }
 #line 1768 "parser.tab.cpp"
     break;
 
   case 36: /* comando: comando_return  */
-#line 126 "parser.ypp"
+#line 131 "parser.ypp"
                         { (yyval.ast) = (yyvsp[0].ast); }
 #line 1774 "parser.tab.cpp"
     break;
 
   case 37: /* comando: bloco  */
-#line 127 "parser.ypp"
+#line 132 "parser.ypp"
                { (yyval.ast) = (yyvsp[0].ast); }
 #line 1780 "parser.tab.cpp"
     break;
 
   case 38: /* comando: ';'  */
-#line 128 "parser.ypp"
+#line 133 "parser.ypp"
              { (yyval.ast) = NULL; }
 #line 1786 "parser.tab.cpp"
     break;
 
   case 39: /* comando_atribuicao: TK_IDENTIFIER '=' expressao ';'  */
-#line 132 "parser.ypp"
+#line 137 "parser.ypp"
                    { (yyval.ast) = astCreate(AST_ASSIGN, NULL, astCreate(AST_SYMBOL, (yyvsp[-3].symbol), NULL, NULL, NULL, NULL), (yyvsp[-1].ast), NULL, NULL); }
 #line 1792 "parser.tab.cpp"
     break;
 
   case 40: /* comando_atribuicao: TK_IDENTIFIER '[' expressao ']' '=' expressao ';'  */
-#line 134 "parser.ypp"
+#line 139 "parser.ypp"
                    { (yyval.ast) = astCreate(AST_ASSIGN_VEC, NULL, astCreate(AST_SYMBOL, (yyvsp[-6].symbol), NULL, NULL, NULL, NULL), (yyvsp[-4].ast), (yyvsp[-1].ast), NULL); }
 #line 1798 "parser.tab.cpp"
     break;
 
   case 41: /* comando_controle: KW_IF '(' expressao ')' comando  */
-#line 138 "parser.ypp"
+#line 143 "parser.ypp"
                  { (yyval.ast) = astCreate(AST_IF, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1804 "parser.tab.cpp"
     break;
 
   case 42: /* comando_controle: KW_IF '(' expressao ')' comando KW_ELSE comando  */
-#line 140 "parser.ypp"
+#line 145 "parser.ypp"
                  { (yyval.ast) = astCreate(AST_IF_ELSE, NULL, (yyvsp[-4].ast), (yyvsp[-2].ast), (yyvsp[0].ast), NULL); }
 #line 1810 "parser.tab.cpp"
     break;
 
   case 43: /* comando_controle: KW_WHILE '(' expressao ')' comando  */
-#line 142 "parser.ypp"
+#line 147 "parser.ypp"
                  { (yyval.ast) = astCreate(AST_WHILE, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1816 "parser.tab.cpp"
     break;
 
   case 44: /* comando_controle: KW_DO comando KW_WHILE '(' expressao ')' ';'  */
-#line 144 "parser.ypp"
+#line 149 "parser.ypp"
                  { (yyval.ast) = astCreate(AST_DO_WHILE, NULL, (yyvsp[-5].ast), (yyvsp[-2].ast), NULL, NULL); }
 #line 1822 "parser.tab.cpp"
     break;
 
   case 45: /* comando_read: KW_READ TK_IDENTIFIER ';'  */
-#line 148 "parser.ypp"
+#line 153 "parser.ypp"
              { (yyval.ast) = astCreate(AST_READ, NULL, astCreate(AST_SYMBOL, (yyvsp[-1].symbol), NULL, NULL, NULL, NULL), NULL, NULL, NULL); }
 #line 1828 "parser.tab.cpp"
     break;
 
   case 46: /* comando_print: KW_PRINT lista_print ';'  */
-#line 152 "parser.ypp"
+#line 157 "parser.ypp"
               { (yyval.ast) = astCreate(AST_PRINT, NULL, (yyvsp[-1].ast), NULL, NULL, NULL); }
 #line 1834 "parser.tab.cpp"
     break;
 
   case 47: /* lista_print: elemento_print lista_print  */
-#line 155 "parser.ypp"
+#line 160 "parser.ypp"
                                         { (yyval.ast) = astCreate(AST_PRINT_LIST, NULL, (yyvsp[-1].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1840 "parser.tab.cpp"
     break;
 
   case 48: /* lista_print: elemento_print  */
-#line 156 "parser.ypp"
+#line 161 "parser.ypp"
                             { (yyval.ast) = (yyvsp[0].ast); }
 #line 1846 "parser.tab.cpp"
     break;
 
   case 49: /* elemento_print: LIT_STRING  */
-#line 159 "parser.ypp"
+#line 164 "parser.ypp"
                            { (yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL); }
 #line 1852 "parser.tab.cpp"
     break;
 
   case 50: /* elemento_print: expressao  */
-#line 160 "parser.ypp"
+#line 165 "parser.ypp"
                           { (yyval.ast) = (yyvsp[0].ast); }
 #line 1858 "parser.tab.cpp"
     break;
 
   case 51: /* comando_return: KW_RETURN expressao ';'  */
-#line 164 "parser.ypp"
+#line 169 "parser.ypp"
                { (yyval.ast) = astCreate(AST_RETURN, NULL, (yyvsp[-1].ast), NULL, NULL, NULL); }
 #line 1864 "parser.tab.cpp"
     break;
 
   case 52: /* expressao: expressao '+' expressao  */
-#line 167 "parser.ypp"
+#line 172 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_ADD, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1870 "parser.tab.cpp"
     break;
 
   case 53: /* expressao: expressao '-' expressao  */
-#line 168 "parser.ypp"
+#line 173 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_SUB, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1876 "parser.tab.cpp"
     break;
 
   case 54: /* expressao: expressao '*' expressao  */
-#line 169 "parser.ypp"
+#line 174 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_MUL, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1882 "parser.tab.cpp"
     break;
 
   case 55: /* expressao: expressao '/' expressao  */
-#line 170 "parser.ypp"
+#line 175 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_DIV, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1888 "parser.tab.cpp"
     break;
 
   case 56: /* expressao: expressao '%' expressao  */
-#line 171 "parser.ypp"
+#line 176 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_MOD, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1894 "parser.tab.cpp"
     break;
 
   case 57: /* expressao: expressao '<' expressao  */
-#line 172 "parser.ypp"
+#line 177 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_LT, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1900 "parser.tab.cpp"
     break;
 
   case 58: /* expressao: expressao '>' expressao  */
-#line 173 "parser.ypp"
+#line 178 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_GT, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1906 "parser.tab.cpp"
     break;
 
   case 59: /* expressao: expressao OPERATOR_LE expressao  */
-#line 174 "parser.ypp"
+#line 179 "parser.ypp"
                                            { (yyval.ast) = astCreate(AST_LE, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1912 "parser.tab.cpp"
     break;
 
   case 60: /* expressao: expressao OPERATOR_GE expressao  */
-#line 175 "parser.ypp"
+#line 180 "parser.ypp"
                                            { (yyval.ast) = astCreate(AST_GE, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1918 "parser.tab.cpp"
     break;
 
   case 61: /* expressao: expressao OPERATOR_EQ expressao  */
-#line 176 "parser.ypp"
+#line 181 "parser.ypp"
                                            { (yyval.ast) = astCreate(AST_EQ, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1924 "parser.tab.cpp"
     break;
 
   case 62: /* expressao: expressao OPERATOR_DIF expressao  */
-#line 177 "parser.ypp"
+#line 182 "parser.ypp"
                                             { (yyval.ast) = astCreate(AST_DIF, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1930 "parser.tab.cpp"
     break;
 
   case 63: /* expressao: expressao '&' expressao  */
-#line 178 "parser.ypp"
+#line 183 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_AND, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1936 "parser.tab.cpp"
     break;
 
   case 64: /* expressao: expressao '|' expressao  */
-#line 179 "parser.ypp"
+#line 184 "parser.ypp"
                                    { (yyval.ast) = astCreate(AST_OR, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 1942 "parser.tab.cpp"
     break;
 
   case 65: /* expressao: '~' expressao  */
-#line 180 "parser.ypp"
+#line 185 "parser.ypp"
                          { (yyval.ast) = astCreate(AST_NOT, NULL, (yyvsp[0].ast), NULL, NULL, NULL); }
 #line 1948 "parser.tab.cpp"
     break;
 
   case 66: /* expressao: '-' expressao  */
-#line 181 "parser.ypp"
+#line 186 "parser.ypp"
                                       { (yyval.ast) = astCreate(AST_NEG, NULL, (yyvsp[0].ast), NULL, NULL, NULL); }
 #line 1954 "parser.tab.cpp"
     break;
 
   case 67: /* expressao: '(' expressao ')'  */
-#line 182 "parser.ypp"
+#line 187 "parser.ypp"
                              { (yyval.ast) = (yyvsp[-1].ast); }
 #line 1960 "parser.tab.cpp"
     break;
 
   case 68: /* expressao: TK_IDENTIFIER  */
-#line 183 "parser.ypp"
+#line 188 "parser.ypp"
                          { (yyval.ast) = astCreate(AST_SYMBOL, (yyvsp[0].symbol), NULL, NULL, NULL, NULL); }
 #line 1966 "parser.tab.cpp"
     break;
 
   case 69: /* expressao: TK_IDENTIFIER '[' expressao ']'  */
-#line 184 "parser.ypp"
+#line 189 "parser.ypp"
                                            { (yyval.ast) = astCreate(AST_VEC_ACCESS, NULL, astCreate(AST_SYMBOL, (yyvsp[-3].symbol), NULL, NULL, NULL, NULL), (yyvsp[-1].ast), NULL, NULL); }
 #line 1972 "parser.tab.cpp"
     break;
 
   case 70: /* expressao: chamada_funcao  */
-#line 185 "parser.ypp"
+#line 190 "parser.ypp"
                           { (yyval.ast) = (yyvsp[0].ast); }
 #line 1978 "parser.tab.cpp"
     break;
 
   case 71: /* expressao: literal  */
-#line 186 "parser.ypp"
+#line 191 "parser.ypp"
                    { (yyval.ast) = (yyvsp[0].ast); }
 #line 1984 "parser.tab.cpp"
     break;
 
   case 72: /* chamada_funcao: TK_IDENTIFIER '(' argumentos ')'  */
-#line 190 "parser.ypp"
+#line 195 "parser.ypp"
                { (yyval.ast) = astCreate(AST_FUNC_CALL, NULL, astCreate(AST_SYMBOL, (yyvsp[-3].symbol), NULL, NULL, NULL, NULL), (yyvsp[-1].ast), NULL, NULL); }
 #line 1990 "parser.tab.cpp"
     break;
 
   case 73: /* chamada_funcao: TK_IDENTIFIER '(' ')'  */
-#line 192 "parser.ypp"
+#line 197 "parser.ypp"
                { (yyval.ast) = astCreate(AST_FUNC_CALL, NULL, astCreate(AST_SYMBOL, (yyvsp[-2].symbol), NULL, NULL, NULL, NULL), NULL, NULL, NULL); }
 #line 1996 "parser.tab.cpp"
     break;
 
   case 74: /* argumentos: expressao ',' argumentos  */
-#line 195 "parser.ypp"
+#line 200 "parser.ypp"
                                      { (yyval.ast) = astCreate(AST_ARG_LIST, NULL, (yyvsp[-2].ast), (yyvsp[0].ast), NULL, NULL); }
 #line 2002 "parser.tab.cpp"
     break;
 
   case 75: /* argumentos: expressao  */
-#line 196 "parser.ypp"
+#line 201 "parser.ypp"
                       { (yyval.ast) = (yyvsp[0].ast); }
 #line 2008 "parser.tab.cpp"
     break;
@@ -2232,7 +2232,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 199 "parser.ypp"
+#line 204 "parser.ypp"
 
 
 void yyerror(char const *mensagem) { 

@@ -44,6 +44,13 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 20 "parser.ypp"
+
+    #include "symbols.hpp"
+    #include "ast.hpp"
+
+#line 54 "parser.tab.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -86,12 +93,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 20 "parser.ypp"
+#line 25 "parser.ypp"
 
     SYMBOL* symbol;
     AST* ast;
 
-#line 95 "parser.tab.hpp"
+#line 102 "parser.tab.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

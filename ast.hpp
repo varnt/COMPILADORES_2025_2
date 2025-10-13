@@ -58,8 +58,8 @@ typedef struct astnode {
 } AST;
 
 // Protótipos das funções
-AST* astCreate(int type, SYMBOL* symbol, AST* s0, AST* s1, AST* s2, AST* s3);
-void astPrint(AST* node, int level);
-void astDecompile(AST* node, FILE* output);
+AST* astCreate(int type, SYMBOL* symbol, AST* s0, AST* s1, AST* s2, AST* s3); // Cria um novo nodo AST
+void astPrint(AST* node, int level); // Imprime a árvore AST de forma indentada
+void astDecompile(AST* node, FILE* output); // Descompila a AST de volta para código fonte
 
 #endif

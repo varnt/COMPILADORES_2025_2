@@ -17,6 +17,11 @@ int getLineNumber();
 AST* root = NULL;
 %}
 
+%code requires {
+    #include "symbols.hpp"
+    #include "ast.hpp"
+}
+
 %union {
     SYMBOL* symbol;
     AST* ast;
