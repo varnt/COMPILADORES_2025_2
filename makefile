@@ -2,11 +2,11 @@ CXX = g++
 CXXFLAGS = -std=c++11 -Wall
 
 # Alvo principal
-target: etapa2
+target: etapa3
 
 # Regra para criar o executável final
 etapa2: parser.tab.o lex.yy.o symbols.o
-	$(CXX) parser.tab.o lex.yy.o symbols.o -o etapa2
+	$(CXX) parser.tab.o lex.yy.o symbols.o -o etapa3
 
 # Regra genérica para compilar arquivos .cpp em .o
 %.o: %.cpp 
@@ -28,15 +28,15 @@ lex.yy.o: lex.yy.cpp parser.tab.hpp symbols.hpp
 
 # Limpeza dos arquivos gerados
 clean:
-	rm -f etapa1 etapa2 lex.yy.cpp parser.tab.cpp parser.tab.hpp *.o
+	rm -f etapa1 etapa3 lex.yy.cpp parser.tab.cpp parser.tab.hpp *.o
 
 # Regra para executar testes
-test2: etapa2
-	./etapa2 sample.txt
+test2: etapa3
+	./etapa3 sample3.txt
 	
 # Empacotamento
 pkge2:
-	rm -f etapa2.tgz
-	tar cvzf etapa2.tgz makefile scanner.l parser.ypp symbols.cpp symbols.hpp 
+	rm -f etapa3.tgz
+	tar cvzf etapa3.tgz makefile scanner.l parser.ypp symbols.cpp symbols.hpp 
 
-#EOFk
+#EOF
