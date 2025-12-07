@@ -5,8 +5,7 @@
     #include <stdlib.h>
     #include <string.h>
     #include <iostream>
-    //#include "tokens.h" //removido conforme etapa2
-    #include "parser.tab.hpp" //arquivo gerado com bison -d parser.ypp
+    #include "parser.tab.hpp"
     #include "ast.hpp"
     #include "symbols.hpp"
     #include <map>
@@ -19,7 +18,7 @@
     int getLineNumber(void);
     int isRunning(void);
 
-    
+    extern int yylineno;
 %}
 /* Aluno Victor de Souza Arnt Matricula 00291097 */
 /* Substituições 1.2 (opcional) */
@@ -47,6 +46,7 @@ literal_string    \"(\\.|[^"\n\\])*\"
 %x STRING COMMENT_ML
 
 %option noyywrap 
+%option yylineno 
 
 %%
     /* Seção 2: Regras */
@@ -93,7 +93,7 @@ literal_string    \"(\\.|[^"\n\\])*\"
 
     /* Regra especial para fim de arquivo */
 <<EOF>>                   { is_running = false; return 0; }
-.                         { yyerror("Caractere inválido"); return TOKEN_ERROR; }
+.                         { fprintf(stderr, "Erro léxico: caractere inválido '%s' na linha %d\n", yytext, yylineno); return TOKEN_ERROR; }
 
 %%
 /* Seção 3: Sub-rotinas */
@@ -102,7 +102,7 @@ literal_string    \"(\\.|[^"\n\\])*\"
 
     // Funções de controle de estado e número de linha
     int getLineNumber(void) {
-        return line_number;
+        return yylineno;
     }
     int isRunning(void) {
         return is_running ? 1 : 0; 
